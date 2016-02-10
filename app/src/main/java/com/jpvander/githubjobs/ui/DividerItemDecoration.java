@@ -7,11 +7,9 @@ import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.LinearLayout;
 
-/**
- * Created by jenva on 2/4/2016.
- */
-public class DividerItemDecoration extends RecyclerView.ItemDecoration {
+class DividerItemDecoration extends RecyclerView.ItemDecoration {
 
     private static final int[] ATTRS = new int[]{android.R.attr.listDivider};
 
@@ -19,14 +17,15 @@ public class DividerItemDecoration extends RecyclerView.ItemDecoration {
     private int rightPadding;
     private int topPadding;
     private int bottomPadding;
-    private Drawable divider;
+    private int listOrientation;
+    private final Drawable divider;
 
-    public DividerItemDecoration(Context context, int leftPadding, int rightPadding, int topPadding,
-                                 int bottomPadding, int listOrientation) {
-        this.leftPadding = leftPadding;
-        this.rightPadding = rightPadding;
-        this.topPadding = topPadding;
-        this.bottomPadding = bottomPadding;
+    public DividerItemDecoration(Context context) {
+        this.leftPadding = 0;
+        this.rightPadding = 0;
+        this.topPadding = 0;
+        this.bottomPadding = 0;
+        this.listOrientation = LinearLayout.VERTICAL;
         final TypedArray styledAttributes = context.obtainStyledAttributes(ATTRS);
         divider = styledAttributes.getDrawable(0);
         styledAttributes.recycle();
@@ -44,15 +43,18 @@ public class DividerItemDecoration extends RecyclerView.ItemDecoration {
 
     @Override
     public void onDraw(Canvas canvas, RecyclerView parent, RecyclerView.State recyclerState) {
-        //TODO: Add handling for horizontal list layouts
-        drawDividerForVerticalList(canvas, parent);
+        if (this.listOrientation == LinearLayout.VERTICAL) {
+            drawDividerForVerticalList(canvas, parent);
+        }
+        //TODO: Add LinearLayout.HORIZONTAL handling.
     }
-    public void drawDividerForVerticalList(Canvas canvas, RecyclerView parent) {
+
+    private void drawDividerForVerticalList(Canvas canvas, RecyclerView parent) {
         int left = parent.getPaddingLeft();
         int right = parent.getWidth() - parent.getPaddingRight();
 
         int childCount = parent.getChildCount();
-        for (int childPosition = 0; childPosition < childCount - 1; childPosition++) {
+        for (int childPosition = 0; childPosition < childCount; childPosition++) {
             View child = parent.getChildAt(childPosition);
 
             RecyclerView.LayoutParams params = (RecyclerView.LayoutParams) child.getLayoutParams();
@@ -63,5 +65,45 @@ public class DividerItemDecoration extends RecyclerView.ItemDecoration {
             divider.setBounds(left, top, right, bottom);
             divider.draw(canvas);
         }
+    }
+
+    public int getLeftPadding() {
+        return leftPadding;
+    }
+
+    public int getRightPadding() {
+        return rightPadding;
+    }
+
+    public int getTopPadding() {
+        return topPadding;
+    }
+
+    public int getBottomPadding() {
+        return bottomPadding;
+    }
+
+    public int getListOrientation() {
+        return listOrientation;
+    }
+
+    public void setLeftPadding(int leftPadding) {
+        this.leftPadding = leftPadding;
+    }
+
+    public void setRightPadding(int rightPadding) {
+        this.rightPadding = rightPadding;
+    }
+
+    public void setTopPadding(int topPadding) {
+        this.topPadding = topPadding;
+    }
+
+    public void setBottomPadding(int bottomPadding) {
+        this.bottomPadding = bottomPadding;
+    }
+
+    public void setListOrientation(int listOrientation) {
+        this.listOrientation = listOrientation;
     }
 }

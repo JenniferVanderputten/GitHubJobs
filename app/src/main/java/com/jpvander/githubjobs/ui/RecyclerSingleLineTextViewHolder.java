@@ -6,14 +6,11 @@ import android.widget.TextView;
 
 import com.jpvander.githubjobs.R;
 
-/**
- * Created by jenva on 2/4/2016.
- */
-public class SingleLineTextViewHolder extends RecyclerView.ViewHolder {
+public class RecyclerSingleLineTextViewHolder extends RecyclerView.ViewHolder {
 
     public TextView textView;
 
-    public SingleLineTextViewHolder(View view) {
+    public RecyclerSingleLineTextViewHolder(View view) {
         super(view);
         this.textView = (TextView) view.findViewById(R.id.textView);
     }

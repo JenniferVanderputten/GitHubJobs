@@ -2,43 +2,56 @@ package com.jpvander.githubjobs.rest.response;
 
 import android.util.Log;
 
-import com.jpvander.githubjobs.ui.SavedSearchesViewAdapter;
+import com.jpvander.githubjobs.datasets.GitHubJobs;
+import com.jpvander.githubjobs.datasets.GitHubJob;
+import com.jpvander.githubjobs.ui.GitHubJobsViewAdapter;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.ArrayList;
-
-/**
- * Created by jenva on 2/5/2016.
- */
 public class OnGetPositionsResponseCallback implements OnJsonResponseCallback {
 
-    SavedSearchesViewAdapter savedSearchesViewAdapter;
+    private GitHubJobsViewAdapter viewAdapter;
 
-    public OnGetPositionsResponseCallback(SavedSearchesViewAdapter savedSearchesViewAdapter) {
-        this.savedSearchesViewAdapter = savedSearchesViewAdapter;
+    public OnGetPositionsResponseCallback(GitHubJobsViewAdapter viewAdapter) {
+        this.viewAdapter = viewAdapter;
     }
 
     public void onJsonResponse(int statusCode, JSONObject response) {
 
-        // TODO: This is unexpected and we should add error handling here. For now, don't modify savedSearches.
+        // TODO: Are there any cases where this could actually happen? If so, modify accordingly.
+
+        GitHubJobs jobs = new GitHubJobs();
+
+        try {
+
+            if (null != response) {
+                jobs.add(new GitHubJob(
+                        response.getString("description"),
+                        response.getString("location")));
+            }
+        }
+        catch (JSONException exception) {
+            Log.d("GitHubJobs", "Invalid JSON in response: " + response.toString());
+        }
     }
 
     public void onJsonResponse(int statusCode, JSONArray response) {
 
-        ArrayList<String> savedSearches = new ArrayList<String>();
+        GitHubJobs jobs = new GitHubJobs();
 
         for (int searchIndex = 0; searchIndex < response.length(); searchIndex++) {
-            JSONObject savedSearch = null;
+            JSONObject savedSearch;
 
             try {
 
                 savedSearch = response.getJSONObject(searchIndex);
 
                 if (null != savedSearch) {
-                    savedSearches.add(savedSearch.getString("title"));
+                    jobs.add(new GitHubJob(
+                            savedSearch.getString("description"),
+                            savedSearch.getString("location")));
                 }
             }
             catch (JSONException exception) {
@@ -46,7 +59,7 @@ public class OnGetPositionsResponseCallback implements OnJsonResponseCallback {
             }
         }
 
-        savedSearchesViewAdapter.updateDataSet(savedSearches);
+        viewAdapter.updateDataSet(jobs);
         //TODO: Handle the pagination.  We'll need a UI change, e.g. "get more results" button.
     }
 }

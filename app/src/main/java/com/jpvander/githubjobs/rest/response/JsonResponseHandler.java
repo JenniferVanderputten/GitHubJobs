@@ -8,12 +8,9 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 import cz.msebera.android.httpclient.Header;
 
-/**
- * Created by jenva on 2/5/2016.
- */
 public class JsonResponseHandler extends JsonHttpResponseHandler {
 
-    private OnJsonResponseCallback callback;
+    private final OnJsonResponseCallback callback;
 
     public JsonResponseHandler(OnJsonResponseCallback callback) {
         this.callback = callback;
@@ -82,7 +79,7 @@ public class JsonResponseHandler extends JsonHttpResponseHandler {
 
         try {
 
-            Log.d("GitHubJobs", "Response was error: " + response.toString());
+            Log.d("GitHubJobs", "Response was error: " + response);
         }
         catch (Exception exception) {
 
