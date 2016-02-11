@@ -2,6 +2,7 @@ package com.jpvander.githubjobs.rest.response;
 
 import android.util.Log;
 
+import com.google.gson.Gson;
 import com.jpvander.githubjobs.datasets.GitHubJobs;
 import com.jpvander.githubjobs.datasets.GitHubJob;
 import com.jpvander.githubjobs.ui.GitHubJobsViewAdapter;
@@ -43,15 +44,23 @@ public class OnGetPositionsResponseCallback implements OnJsonResponseCallback {
 
         for (int searchIndex = 0; searchIndex < response.length(); searchIndex++) {
             JSONObject savedSearch;
+            Gson gson = new Gson();
 
             try {
 
                 savedSearch = response.getJSONObject(searchIndex);
 
                 if (null != savedSearch) {
-                    jobs.add(new GitHubJob(
-                            savedSearch.getString("description"),
-                            savedSearch.getString("location")));
+                    GitHubJob job = gson.fromJson(savedSearch.toString(), GitHubJob.class);
+
+                    if (null != job) {
+                        jobs.add(job);
+                    }
+                    else {
+                        jobs.add(new GitHubJob(
+                                savedSearch.getString("description"),
+                                savedSearch.getString("location")));
+                    }
                 }
             }
             catch (JSONException exception) {

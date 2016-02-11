@@ -26,6 +26,11 @@ public class GitHubJob {
     private String company_logo;
     private String url;
 
+    public GitHubJob() {
+        this.description = "PHP";
+        this.location = "San Francisco";
+    }
+
     public GitHubJob(String description, String location) {
         this.description = description;
         this.location = location;
@@ -135,21 +140,7 @@ public class GitHubJob {
         return this.type;
     }
 
-    public String getDisplayTitle() {
-        ArrayList<String> fieldValues = new ArrayList<>();
-
-        for (Field field: this.getClass().getDeclaredFields()) {
-            if (null != field && !field.toString().isEmpty()) {
-                try {
-                    fieldValues.add(field.get(this).toString());
-                }
-                catch (Exception exception) {
-                    // We are only accessing fields within this object; however, the try-catch block
-                    // is enforced and thus required.
-                }
-            }
-        }
-
+    public String getDisplayTitle( ArrayList<String> fieldValues) {
         return (StringUtils.join(fieldValues, " - "));
     }
 

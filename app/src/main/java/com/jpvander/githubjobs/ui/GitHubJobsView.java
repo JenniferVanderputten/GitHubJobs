@@ -14,14 +14,15 @@ public class GitHubJobsView {
     private RecyclerView view;
     private GitHubJobsViewAdapter viewAdapter;
 
-    public GitHubJobsView(Activity activity, RecyclerView view, GitHubJobs jobs) {
+    public GitHubJobsView(Activity activity, RecyclerView view, GitHubJobsViewAdapter viewAdapter) {
+
         float displayScale = activity.getResources().getDisplayMetrics().density;
         int paddingPx = (int) (PADDING_DP * displayScale + 0.5f);
 
         this.view = view;
         this.view.setLayoutManager(
                 new LinearLayoutManager(activity, ORIENTATION, false));
-        this.viewAdapter = new GitHubJobsViewAdapter(jobs);
+        this.viewAdapter = viewAdapter;
         this.view.setAdapter(viewAdapter);
         DividerItemDecoration divider = new DividerItemDecoration(activity);
         divider.setTopPadding(paddingPx);

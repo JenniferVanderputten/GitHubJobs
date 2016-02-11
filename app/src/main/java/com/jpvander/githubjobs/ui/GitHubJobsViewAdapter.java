@@ -6,7 +6,10 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.jpvander.githubjobs.R;
+import com.jpvander.githubjobs.datasets.GitHubJob;
 import com.jpvander.githubjobs.datasets.GitHubJobs;
+
+import java.util.ArrayList;
 
 public class GitHubJobsViewAdapter extends RecyclerView.Adapter<RecyclerSingleLineTextViewHolder> {
 
@@ -27,7 +30,10 @@ public class GitHubJobsViewAdapter extends RecyclerView.Adapter<RecyclerSingleLi
 
     @Override
     public void onBindViewHolder(RecyclerSingleLineTextViewHolder holder, int position) {
-        holder.textView.setText(jobs.get(position).getDisplayTitle());
+        ArrayList<String> jobFields = new ArrayList<>();
+        jobFields.add(getJob(position).getDescription());
+        jobFields.add(getJob(position).getLocation());
+        holder.textView.setText(jobs.get(position).getDisplayTitle(jobFields));
     }
 
     @Override
@@ -39,4 +45,9 @@ public class GitHubJobsViewAdapter extends RecyclerView.Adapter<RecyclerSingleLi
         this.jobs = jobs;
         this.notifyDataSetChanged();
     }
+
+    public GitHubJob getJob(int position) {
+        return jobs.get(position);
+    }
+
 }
