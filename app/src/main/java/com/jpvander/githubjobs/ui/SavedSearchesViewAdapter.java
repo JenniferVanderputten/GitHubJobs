@@ -7,12 +7,9 @@ import com.jpvander.githubjobs.datasets.GitHubJobs;
 
 import java.util.ArrayList;
 
-/**
- * Created by jenva on 2/11/2016.
- */
-public class SavedSearchesViewAdapter extends GitHubJobsViewAdapter {
+public class SavedSearchesViewAdapter extends SearchViewAdapter {
 
-    private ViewSavedSearchesFragment fragment;
+    private final ViewSavedSearchesFragment fragment;
 
     public SavedSearchesViewAdapter(ViewSavedSearchesFragment fragment, GitHubJobs jobs) {
         super(jobs);

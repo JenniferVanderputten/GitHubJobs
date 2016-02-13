@@ -4,7 +4,7 @@ import java.util.HashMap;
 
 public class GitHubJobs
 {
-    private HashMap<Integer, GitHubJob> savedSearches;
+    private final HashMap<Integer, GitHubJob> savedSearches;
 
     public GitHubJobs() {
         this.savedSearches = new HashMap<>();
@@ -16,10 +16,6 @@ public class GitHubJobs
 
     public void add(GitHubJob gitHubJob) {
         this.savedSearches.put(this.savedSearches.size(), gitHubJob);
-    }
-
-    public void remove(int position) {
-        this.savedSearches.remove(position);
     }
 
     public GitHubJob get(int position) {

@@ -1,10 +1,15 @@
 package com.jpvander.githubjobs.datasets;
 
+import com.loopj.android.http.RequestParams;
+
 import org.apache.commons.lang3.StringUtils;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
 import java.util.ArrayList;
+import java.util.HashMap;
 
+@SuppressWarnings("unused")
 public class GitHubJob {
 
     private String id;
@@ -14,7 +19,6 @@ public class GitHubJob {
     private String location;   // Cannot be used with latitude or longitude
     private String latitude;   // Must be paired with longitude; cannot be used with location
     private String longitude;  // Must be paired with latitude; cannot be used with location
-    //TODO: Enforce the rules of location/latitude/longitude
 
     private Boolean full_time; // The request uses a boolean that corresponds to String type
     private String type;       // The response returns a string corresponding to boolean full_time
@@ -150,5 +154,24 @@ public class GitHubJob {
 
     public void setTitle(String title) {
         this.title = title;
+    }
+
+    public RequestParams getRequestParams() {
+        RequestParams params = new RequestParams();
+
+        for (Field field : getClass().getDeclaredFields()) {
+            if (!Modifier.isStatic(field.getModifiers())) {
+                try {
+                    String name = field.getName();
+                    Object value = field.get(this);
+                    params.put(name, value);
+                }
+                catch (IllegalAccessException exception) {
+                    // We must catch this to satisfy the compiler. Ignore anything inaccessible.
+                }
+            }
+        }
+
+        return params;
     }
 }

@@ -9,6 +9,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.LinearLayout;
 
+@SuppressWarnings("unused")
 class DividerItemDecoration extends RecyclerView.ItemDecoration {
 
     private static final int[] ATTRS = new int[]{android.R.attr.listDivider};
@@ -46,7 +47,6 @@ class DividerItemDecoration extends RecyclerView.ItemDecoration {
         if (this.listOrientation == LinearLayout.VERTICAL) {
             drawDividerForVerticalList(canvas, parent);
         }
-        //TODO: Add LinearLayout.HORIZONTAL handling.
     }
 
     private void drawDividerForVerticalList(Canvas canvas, RecyclerView parent) {

@@ -14,16 +14,8 @@ public class AsyncRestClient {
         get(JSON_RESPONSE_APPEND, params, responseHandler);
     }
 
-    public static void getPositionDetails(String id, RequestParams params, AsyncHttpResponseHandler responseHandler) {
-        get("/" + id + JSON_RESPONSE_APPEND, params, responseHandler);
-    }
-
     private static void get(String url, RequestParams params, AsyncHttpResponseHandler responseHandler) {
         client.get(getAbsoluteUrl(url), params, responseHandler);
-    }
-
-    private static void post(String url, RequestParams params, AsyncHttpResponseHandler responseHandler) {
-        client.post(getAbsoluteUrl(url), params, responseHandler);
     }
 
     private static String getAbsoluteUrl(String relativeUrl) {

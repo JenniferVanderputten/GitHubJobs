@@ -4,9 +4,10 @@
     android:layout_height="match_parent">
 
     <TextView
-        android:layout_width="fill_parent"
+        android:layout_width="wrap_content"
         android:layout_height="fill_parent"
-        android:text="New Text"
+        android:layout_weight="1"
+        android:text="Example"
         android:id="@+id/textView"
         android:layout_gravity="center_vertical" />
 </LinearLayout>

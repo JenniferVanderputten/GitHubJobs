@@ -5,40 +5,42 @@ import android.util.Log;
 import com.google.gson.Gson;
 import com.jpvander.githubjobs.datasets.GitHubJobs;
 import com.jpvander.githubjobs.datasets.GitHubJob;
-import com.jpvander.githubjobs.ui.GitHubJobsViewAdapter;
+import com.jpvander.githubjobs.ui.SearchViewAdapter;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import cz.msebera.android.httpclient.HttpStatus;
+
 public class OnGetPositionsResponseCallback implements OnJsonResponseCallback {
 
-    private GitHubJobsViewAdapter viewAdapter;
+    private final SearchViewAdapter viewAdapter;
 
-    public OnGetPositionsResponseCallback(GitHubJobsViewAdapter viewAdapter) {
+    public OnGetPositionsResponseCallback(SearchViewAdapter viewAdapter) {
         this.viewAdapter = viewAdapter;
     }
 
     public void onJsonResponse(int statusCode, JSONObject response) {
 
-        // TODO: Are there any cases where this could actually happen? If so, modify accordingly.
+        // TODO: Indicate in UI that no jobs were found? This is not expected.
 
-        GitHubJobs jobs = new GitHubJobs();
+        Log.d("GitHubJobs", "Received JSONObject, expecting JSONArray: " + response.toString());
 
-        try {
-
-            if (null != response) {
-                jobs.add(new GitHubJob(
-                        response.getString("description"),
-                        response.getString("location")));
-            }
+        if (HttpStatus.SC_OK != statusCode) {
+            Log.d("GitHubJobs", "Response status was OK (200)");
         }
-        catch (JSONException exception) {
-            Log.d("GitHubJobs", "Invalid JSON in response: " + response.toString());
+        else {
+            Log.d("GitHubJobs", "Response status was " + statusCode);
         }
     }
 
     public void onJsonResponse(int statusCode, JSONArray response) {
+
+        if (HttpStatus.SC_OK != statusCode) {
+            //TODO: Use cached responses?  Inform the user?
+            return;
+        }
 
         GitHubJobs jobs = new GitHubJobs();
 
@@ -50,7 +52,11 @@ public class OnGetPositionsResponseCallback implements OnJsonResponseCallback {
 
                 savedSearch = response.getJSONObject(searchIndex);
 
-                if (null != savedSearch) {
+                if (null == savedSearch || 0 >= savedSearch.length()) {
+                    //TODO: Indicate in UI that no jobs were found
+                    Log.d("GitHubJobs", "No jobs found");
+                }
+                else {
                     GitHubJob job = gson.fromJson(savedSearch.toString(), GitHubJob.class);
 
                     if (null != job) {

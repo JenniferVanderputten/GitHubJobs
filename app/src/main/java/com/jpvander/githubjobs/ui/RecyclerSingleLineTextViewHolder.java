@@ -8,7 +8,7 @@ import com.jpvander.githubjobs.R;
 
 public class RecyclerSingleLineTextViewHolder extends RecyclerView.ViewHolder {
 
-    public TextView textView;
+    public final TextView textView;
 
     public RecyclerSingleLineTextViewHolder(View view) {
         super(view);

@@ -11,11 +11,11 @@ import com.jpvander.githubjobs.datasets.GitHubJobs;
 
 import java.util.ArrayList;
 
-public class GitHubJobsViewAdapter extends RecyclerView.Adapter<RecyclerSingleLineTextViewHolder> {
+public class SearchViewAdapter extends RecyclerView.Adapter<RecyclerSingleLineTextViewHolder> {
 
     private GitHubJobs jobs;
 
-    public GitHubJobsViewAdapter(GitHubJobs jobs) {
+    SearchViewAdapter(GitHubJobs jobs) {
         this.jobs = jobs;
     }
 
@@ -46,7 +46,7 @@ public class GitHubJobsViewAdapter extends RecyclerView.Adapter<RecyclerSingleLi
         this.notifyDataSetChanged();
     }
 
-    public GitHubJob getJob(int position) {
+    GitHubJob getJob(int position) {
         return jobs.get(position);
     }
 
