@@ -5,7 +5,7 @@ import android.util.Log;
 import com.google.gson.Gson;
 import com.jpvander.githubjobs.datasets.GitHubJobs;
 import com.jpvander.githubjobs.datasets.GitHubJob;
-import com.jpvander.githubjobs.ui.SearchViewAdapter;
+import com.jpvander.githubjobs.ui.search_results.SearchResultsViewAdapter;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -15,9 +15,9 @@ import cz.msebera.android.httpclient.HttpStatus;
 
 public class OnGetPositionsResponseCallback implements OnJsonResponseCallback {
 
-    private final SearchViewAdapter viewAdapter;
+    private final SearchResultsViewAdapter viewAdapter;
 
-    public OnGetPositionsResponseCallback(SearchViewAdapter viewAdapter) {
+    public OnGetPositionsResponseCallback(SearchResultsViewAdapter viewAdapter) {
         this.viewAdapter = viewAdapter;
     }
 

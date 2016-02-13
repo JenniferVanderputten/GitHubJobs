@@ -1,4 +1,4 @@
-package com.jpvander.githubjobs.ui;
+package com.jpvander.githubjobs.ui.graphics;
 
 import android.content.Context;
 import android.content.res.TypedArray;
@@ -10,7 +10,7 @@ import android.view.View;
 import android.widget.LinearLayout;
 
 @SuppressWarnings("unused")
-class DividerItemDecoration extends RecyclerView.ItemDecoration {
+public class DividerItemDecoration extends RecyclerView.ItemDecoration {
 
     private static final int[] ATTRS = new int[]{android.R.attr.listDivider};
 

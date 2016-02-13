@@ -1,4 +1,4 @@
-package com.jpvander.githubjobs.activities.searches.saved;
+package com.jpvander.githubjobs.activities.searches;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -13,13 +13,14 @@ import android.view.ViewGroup;
 
 import com.jpvander.githubjobs.R;
 import com.jpvander.githubjobs.datasets.*;
-import com.jpvander.githubjobs.ui.SearchView;
-import com.jpvander.githubjobs.ui.SavedSearchesViewAdapter;
+import com.jpvander.githubjobs.ui.saved_searches.SavedSearchesView;
+import com.jpvander.githubjobs.ui.saved_searches.SavedSearchesViewAdapter;
 
 public class ViewSavedSearchesFragment extends Fragment {
 
     private OnFragmentInteractionListener mListener;
 
+    @SuppressWarnings("unused")
     public ViewSavedSearchesFragment() {
         // Required empty public constructor
     }
@@ -45,7 +46,7 @@ public class ViewSavedSearchesFragment extends Fragment {
         jobSearches.add(1, new GitHubJob("PHP", "New York"));
         jobSearches.add(2, new GitHubJob("PHP", "Amsterdam"));
 
-        new SearchView(getActivity(),
+        new SavedSearchesView(getActivity(),
                 (RecyclerView) savedSearchesView.findViewById(R.id.recycler),
                 new SavedSearchesViewAdapter(this, jobSearches));
 

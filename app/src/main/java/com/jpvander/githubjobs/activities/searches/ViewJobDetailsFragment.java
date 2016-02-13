@@ -1,4 +1,4 @@
-package com.jpvander.githubjobs.activities.searches.saved;
+package com.jpvander.githubjobs.activities.searches;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -10,15 +10,14 @@ import android.support.v7.widget.RecyclerView;
 import com.jpvander.githubjobs.R;
 import com.jpvander.githubjobs.datasets.GitHubJob;
 import com.jpvander.githubjobs.datasets.GitHubJobs;
-import com.jpvander.githubjobs.ui.SearchView;
-import com.jpvander.githubjobs.ui.JobDetailsViewAdapter;
+import com.jpvander.githubjobs.ui.job_details.JobDetailsView;
+import com.jpvander.githubjobs.ui.job_details.JobDetailsViewAdapter;
 
 public class ViewJobDetailsFragment extends Fragment {
 
-    private static final float PADDING_DP = 10.0f;
-
     private GitHubJob jobSelected;
 
+    @SuppressWarnings("unused")
     public ViewJobDetailsFragment() {
         // Required empty public constructor
     }
@@ -40,9 +39,9 @@ public class ViewJobDetailsFragment extends Fragment {
         GitHubJobs jobsToDisplay = new GitHubJobs();
         jobsToDisplay.add(jobSelected);
 
-        new SearchView(getActivity(),
+        new JobDetailsView(getActivity(),
                 (RecyclerView) jobDetailsView.findViewById(R.id.recycler),
-                new JobDetailsViewAdapter(this, jobsToDisplay));
+                new JobDetailsViewAdapter(jobsToDisplay));
 
         return jobDetailsView;
     }

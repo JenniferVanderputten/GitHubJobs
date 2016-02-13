@@ -1,4 +1,4 @@
-package com.jpvander.githubjobs.activities.searches.saved;
+package com.jpvander.githubjobs.activities.searches;
 
 import android.support.v4.app.FragmentTransaction;
 import android.os.Bundle;
@@ -6,7 +6,6 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.Menu;
 
 import com.jpvander.githubjobs.R;
 import com.jpvander.githubjobs.datasets.GitHubJob;
@@ -57,7 +56,7 @@ public class ViewSearchesActivity extends AppCompatActivity implements
     }
 
     public void onViewSavedSearchesInteraction(GitHubJob job) {
-        // TODO: Add progess indicator for search results screen
+        // TODO: Add progress indicator for search results screen
         ArrayList<String> jobFields = new ArrayList<>();
         jobFields.add(job.getDescription());
         jobFields.add(job.getLocation());
@@ -86,10 +85,6 @@ public class ViewSearchesActivity extends AppCompatActivity implements
         transaction.addToBackStack(null);
         transaction.commit();
         setActionBarBackButtonEnabled(true);
-    }
-
-    public void onViewJobDetailsInteraction(GitHubJob job) {
-        // It is required to implement all fragment interaction listeners
     }
 
     private void setActionBarBackButtonEnabled(boolean enabled) {

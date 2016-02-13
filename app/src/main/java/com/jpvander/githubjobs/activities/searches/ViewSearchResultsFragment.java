@@ -1,4 +1,4 @@
-package com.jpvander.githubjobs.activities.searches.saved;
+package com.jpvander.githubjobs.activities.searches;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -13,8 +13,8 @@ import com.jpvander.githubjobs.R;
 import com.jpvander.githubjobs.rest.request.AsyncRestClient;
 import com.jpvander.githubjobs.rest.response.JsonResponseHandler;
 import com.jpvander.githubjobs.rest.response.OnGetPositionsResponseCallback;
-import com.jpvander.githubjobs.ui.SearchView;
-import com.jpvander.githubjobs.ui.SearchResultsViewAdapter;
+import com.jpvander.githubjobs.ui.search_results.SearchResultsView;
+import com.jpvander.githubjobs.ui.search_results.SearchResultsViewAdapter;
 import com.loopj.android.http.RequestParams;
 import com.jpvander.githubjobs.datasets.*;
 
@@ -23,6 +23,7 @@ public class ViewSearchResultsFragment extends Fragment {
     private OnFragmentInteractionListener mListener;
     private GitHubJob jobRequested;
 
+    @SuppressWarnings("unused")
     public ViewSearchResultsFragment() {
         // Required empty public constructor
     }
@@ -31,23 +32,23 @@ public class ViewSearchResultsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        View searchResultsView = inflater.inflate(R.layout.fragment_view_search_results, container, false);
+        View fragmentView = inflater.inflate(R.layout.fragment_view_search_results, container, false);
 
         if (null == jobRequested) {
             jobRequested = new GitHubJob();
         }
 
-        SearchView searchView = new SearchView(getActivity(),
-                (RecyclerView) searchResultsView.findViewById(R.id.recycler),
+        SearchResultsView searchResultsView = new SearchResultsView(getActivity(),
+                (RecyclerView) fragmentView.findViewById(R.id.recycler),
                 new SearchResultsViewAdapter(this));
 
         JsonResponseHandler getPositionsResponseHandler = new JsonResponseHandler(
-                new OnGetPositionsResponseCallback(searchView.getViewAdapter()));
+                new OnGetPositionsResponseCallback(searchResultsView.getViewAdapter()));
 
         RequestParams params = jobRequested.getRequestParams();
         AsyncRestClient.getPositions(params, getPositionsResponseHandler);
 
-        return searchResultsView;
+        return fragmentView;
     }
 
     public void onSearchResultsItemPressed(GitHubJob job) {
