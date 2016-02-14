@@ -28,7 +28,7 @@ public class SearchResultsViewAdapter extends RecyclerView.Adapter<RecyclerImage
     public RecyclerImageAndTextViewHolder onCreateViewHolder(ViewGroup parent, int type) {
         View savedSearchesView =
                 LayoutInflater.from(parent.getContext())
-                        .inflate(R.layout.image_and_text_view_item, parent, false);
+                        .inflate(R.layout.item_image_and_text_view, parent, false);
 
         return (new RecyclerImageAndTextViewHolder(savedSearchesView));
     }

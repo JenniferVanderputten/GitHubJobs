@@ -27,7 +27,7 @@ public class SavedSearchesViewAdapter extends RecyclerView.Adapter<RecyclerTextV
     public RecyclerTextViewHolder onCreateViewHolder(ViewGroup parent, int type) {
         View savedSearchesView =
                 LayoutInflater.from(parent.getContext())
-                        .inflate(R.layout.single_text_view_item, parent, false);
+                        .inflate(R.layout.item_single_text_view, parent, false);
 
         return (new RecyclerTextViewHolder(savedSearchesView));
     }
