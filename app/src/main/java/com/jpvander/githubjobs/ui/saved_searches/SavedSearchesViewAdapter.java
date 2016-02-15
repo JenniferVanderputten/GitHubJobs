@@ -16,7 +16,7 @@ import java.util.ArrayList;
 public class SavedSearchesViewAdapter extends RecyclerView.Adapter<RecyclerTextViewHolder> {
 
     private final ViewSavedSearchesFragment fragment;
-    private GitHubJobs jobs;
+    private final GitHubJobs jobs;
 
     public SavedSearchesViewAdapter(ViewSavedSearchesFragment fragment, GitHubJobs jobs) {
         this.jobs = jobs;

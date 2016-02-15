@@ -9,6 +9,16 @@
         android:layout_height="match_parent"
         android:orientation="horizontal">
 
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:paddingLeft="@dimen/list_item_horizontal_margin"
+            android:paddingRight="@dimen/list_item_horizontal_margin"
+            android:layout_gravity="center_vertical|start"
+            android:text="@string/example_text"
+            android:id="@+id/textView"
+            android:layout_weight="1"/>
+
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -16,16 +26,7 @@
             android:contentDescription="@string/company_log_alt_text"
             android:paddingLeft="@dimen/list_item_horizontal_margin"
             android:paddingRight="@dimen/list_item_horizontal_margin"
-            android:layout_gravity="center_vertical|start"/>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:paddingLeft="@dimen/list_item_horizontal_margin"
-            android:paddingRight="@dimen/list_item_horizontal_margin"
-            android:layout_gravity="center_vertical|end"
-            android:text="@string/example_text"
-            android:id="@+id/textView"/>
+            android:layout_gravity="center_vertical|end"/>
 
     </LinearLayout>
 

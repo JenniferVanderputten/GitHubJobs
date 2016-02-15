@@ -23,7 +23,7 @@ public class OnGetPositionsResponseCallback implements OnJsonResponseCallback {
 
     public void onJsonResponse(int statusCode, JSONObject response) {
 
-        // TODO: Indicate in UI that no jobs were found? This is not expected.
+        // TODO: Indicate in UI that no jobs were found or ignore since JSONObject is not expected?
 
         Log.d("GitHubJobs", "Received JSONObject, expecting JSONArray: " + response.toString());
 

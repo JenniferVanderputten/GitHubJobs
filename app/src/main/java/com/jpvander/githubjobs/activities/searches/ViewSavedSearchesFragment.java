@@ -32,6 +32,7 @@ public class ViewSavedSearchesFragment extends Fragment {
         View savedSearchesView = inflater.inflate(R.layout.fragment_view_saved_searches, container, false);
 
         FloatingActionButton fab = (FloatingActionButton) savedSearchesView.findViewById(R.id.fab);
+        //TODO: Add ability to do new searches
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

@@ -45,9 +45,6 @@ public class SearchResultsViewAdapter extends RecyclerView.Adapter<RecyclerImage
             float displayDensity = fragment.getActivity().getResources().getDisplayMetrics().density;
             new ImageDownloader(holder.imageView, displayDensity).execute(logoUrl);
         }
-        else {
-            //TODO: Add a placeholder image
-        }
 
         holder.textView.setText(jobs.get(position).getDisplayTitle(jobFields));
         holder.textView.setOnClickListener(new View.OnClickListener() {
