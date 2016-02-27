@@ -2,4 +2,6 @@
     <string name="app_name">GitHub Jobs</string>
     <string name="example_text">Example</string>
     <string name="company_log_alt_text">Company Logo</string>
+    <string name="search_button_text">Search</string>
+    <string name="must_implement_OFIL"> must implement OnFragmentInteractionListener</string>
 </resources>

@@ -1,4 +1,4 @@
-package com.jpvander.githubjobs.datasets;
+package com.jpvander.githubjobs.datasets.data;
 
 import java.util.HashMap;
 
@@ -8,10 +8,6 @@ public class GitHubJobs
 
     public GitHubJobs() {
         this.jobs = new HashMap<>();
-    }
-
-    public void add(int position, GitHubJob gitHubJob) {
-        this.jobs.put(position, gitHubJob);
     }
 
     public void add(GitHubJob gitHubJob) {

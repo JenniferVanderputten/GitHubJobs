@@ -1,10 +1,9 @@
-package com.jpvander.githubjobs.ui.view_holders;
+package com.jpvander.githubjobs.ui.holders;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.text.Html;
 import android.text.util.Linkify;
-import android.util.Log;
 import android.view.View;
 import android.widget.TableLayout;
 import android.widget.TableRow;
@@ -16,18 +15,21 @@ public class RecyclerTableHolder extends RecyclerView.ViewHolder {
 
     private final TableLayout tableLayout;
     private final int paddingPx;
+    private final Context context;
 
     public RecyclerTableHolder(View view) {
         super(view);
-        Log.d("GitHubJobs", "A new holder");
         this.tableLayout = (TableLayout) view.findViewById(R.id.tableLayout);
         float displayScale = view.getResources().getDisplayMetrics().density;
         this.paddingPx = (int) (view.getResources()
                 .getDimension(R.dimen.list_item_horizontal_margin) * displayScale);
+        this.context = view.getContext();
     }
 
-    public void addTableRow(Context context, String label, String content) {
-        Log.d("GitHubJobs", "A new row");
+    public void addTableRowWithHtmlContent(String label, String content) {
+        if (null == label) { label = ""; }
+        if (null == content) { content = ""; }
+
         TableRow tableRow = new TableRow(context);
         tableRow.setPadding(0, paddingPx, 0, 0);
 

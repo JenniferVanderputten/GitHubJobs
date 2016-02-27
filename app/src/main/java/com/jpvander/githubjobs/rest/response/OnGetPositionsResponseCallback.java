@@ -3,46 +3,33 @@ package com.jpvander.githubjobs.rest.response;
 import android.util.Log;
 
 import com.google.gson.Gson;
-import com.jpvander.githubjobs.datasets.GitHubJobs;
-import com.jpvander.githubjobs.datasets.GitHubJob;
-import com.jpvander.githubjobs.ui.search_results.SearchResultsViewAdapter;
+import com.jpvander.githubjobs.datasets.data.GitHubJobs;
+import com.jpvander.githubjobs.datasets.data.GitHubJob;
+import com.jpvander.githubjobs.ui.adapters.SearchResultsCallback;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import cz.msebera.android.httpclient.HttpStatus;
-
 public class OnGetPositionsResponseCallback implements OnJsonResponseCallback {
 
-    private final SearchResultsViewAdapter viewAdapter;
+    private final SearchResultsCallback callback;
 
-    public OnGetPositionsResponseCallback(SearchResultsViewAdapter viewAdapter) {
-        this.viewAdapter = viewAdapter;
+    public OnGetPositionsResponseCallback(SearchResultsCallback callback) {
+        this.callback = callback;
     }
 
-    public void onJsonResponse(int statusCode, JSONObject response) {
-
-        // TODO: Indicate in UI that no jobs were found or ignore since JSONObject is not expected?
-
-        Log.d("GitHubJobs", "Received JSONObject, expecting JSONArray: " + response.toString());
-
-        if (HttpStatus.SC_OK != statusCode) {
-            Log.d("GitHubJobs", "Response status was OK (200)");
-        }
-        else {
-            Log.d("GitHubJobs", "Response status was " + statusCode);
+    public void onJsonSuccessResponse(JSONObject response) {
+        // TODO: Indicate in UI that no jobs were found since JSONObject is not expected?
+        if (null == response) {
+            Log.e("GitHubJobs", "OnGetPositionsResponseCallback::onJsonSuccessResponse was null");
         }
     }
 
-    public void onJsonResponse(int statusCode, JSONArray response) {
-
-        if (HttpStatus.SC_OK != statusCode) {
-            //TODO: Use cached responses?  Inform the user?
-            return;
-        }
-
+    public void onJsonSuccessResponse(JSONArray response) {
         GitHubJobs jobs = new GitHubJobs();
+
+        // TODO: Indicate no jobs found if response is empty
 
         for (int searchIndex = 0; searchIndex < response.length(); searchIndex++) {
             JSONObject savedSearch;
@@ -54,7 +41,6 @@ public class OnGetPositionsResponseCallback implements OnJsonResponseCallback {
 
                 if (null == savedSearch || 0 >= savedSearch.length()) {
                     //TODO: Indicate in UI that no jobs were found
-                    Log.d("GitHubJobs", "No jobs found");
                 }
                 else {
                     GitHubJob job = gson.fromJson(savedSearch.toString(), GitHubJob.class);
@@ -70,11 +56,28 @@ public class OnGetPositionsResponseCallback implements OnJsonResponseCallback {
                 }
             }
             catch (JSONException exception) {
-                Log.d("GitHubJobs", "Invalid JSON in response: " + response.toString());
+                Log.e("GitHubJobs", "Invalid JSON in response");
             }
         }
 
-        viewAdapter.updateDataSet(jobs);
-        //TODO: Handle the pagination.  We'll need a UI change, e.g. "get more results" button.
+        callback.updateSearchResults(jobs);
+
+        //TODO: Add pagination?  We'll need a UI change, e.g. a "get more results" button.
+    }
+
+    public void onJsonFailureResponse(JSONObject response) {
+        if (null == response) {
+            Log.e("GitHubJobs", "OnGetPositionsResponseCallback::onJsonFailureResponse was null");
+        }
+
+        callback.updateSearchResults(null);
+    }
+
+    public void onJsonFailureResponse(JSONArray response) {
+        if (null == response) {
+            Log.e("GitHubJobs", "OnGetPositionsResponseCallback::onJsonFailureResponse was null");
+        }
+
+        callback.updateSearchResults(null);
     }
 }

@@ -4,6 +4,8 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 interface OnJsonResponseCallback {
-    void onJsonResponse(int statusCode, JSONObject response);
-    void onJsonResponse(int statusCode, JSONArray response);
+    void onJsonSuccessResponse(JSONObject response);
+    void onJsonSuccessResponse(JSONArray response);
+    void onJsonFailureResponse(JSONObject response);
+    void onJsonFailureResponse(JSONArray response);
 }

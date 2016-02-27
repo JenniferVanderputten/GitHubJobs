@@ -15,6 +15,7 @@ public class AsyncRestClient {
     }
 
     private static void get(RequestParams params, AsyncHttpResponseHandler responseHandler) {
+        client.setTimeout(7 * 1000);
         client.get(BASE_URL + JSON_RESPONSE_APPEND, params, responseHandler);
     }
 }

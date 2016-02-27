@@ -1,27 +1,40 @@
 package com.jpvander.githubjobs.activities.searches;
 
+import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.jpvander.githubjobs.activities.BaseFragment;
 import com.jpvander.githubjobs.R;
+import com.jpvander.githubjobs.datasets.helpers.SearchResultsDbHelper;
+import com.jpvander.githubjobs.datasets.data.GitHubJob;
+import com.jpvander.githubjobs.datasets.data.GitHubJobs;
 import com.jpvander.githubjobs.rest.request.AsyncRestClient;
 import com.jpvander.githubjobs.rest.response.JsonResponseHandler;
 import com.jpvander.githubjobs.rest.response.OnGetPositionsResponseCallback;
-import com.jpvander.githubjobs.ui.search_results.SearchResultsView;
-import com.jpvander.githubjobs.ui.search_results.SearchResultsViewAdapter;
-import com.loopj.android.http.RequestParams;
-import com.jpvander.githubjobs.datasets.*;
+import com.jpvander.githubjobs.ui.adapters.SearchResultsCallback;
+import com.jpvander.githubjobs.ui.graphics.DividerItemDecoration;
+import com.jpvander.githubjobs.ui.adapters.SearchResultsViewAdapter;
 
-public class ViewSearchResultsFragment extends Fragment {
+import java.util.ArrayList;
 
-    private OnFragmentInteractionListener mListener;
+
+public class ViewSearchResultsFragment extends BaseFragment {
+
+    private OnFragmentInteractionListener interactionListener;
+    private JsonResponseHandler getPositionsResponseHandler;
     private GitHubJob jobRequested;
+    private boolean jobRequestedChanged = false;
+    private GitHubJobs jobsFound;
+    private ProgressDialog spinner;
+    private SearchResultsDbHelper searchResultsDbHelper;
+    private String title;
 
     @SuppressWarnings("unused")
     public ViewSearchResultsFragment() {
@@ -29,60 +42,108 @@ public class ViewSearchResultsFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedState) {
+        //TODO: Make toolbar title the job requested title
+        Activity activity = getActivity();
+        View view = inflater.inflate(R.layout.fragment_view_search_results, container, false);
+        Context context = container.getContext();
+        searchResultsDbHelper = new SearchResultsDbHelper(context);
+        RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.recycler);
 
-        View fragmentView = inflater.inflate(R.layout.fragment_view_search_results, container, false);
+        spinner = new ProgressDialog(activity, ProgressDialog.STYLE_SPINNER);
+        spinner.setTitle("Searching GitHub Jobs...");
+        spinner.setCancelable(true);
 
-        if (null == jobRequested) {
-            jobRequested = new GitHubJob();
+        final SearchResultsViewAdapter adapter = new SearchResultsViewAdapter(
+                interactionListener,
+                context.getResources().getDisplayMetrics().density);
+
+        DividerItemDecoration divider = new DividerItemDecoration(activity);
+        recyclerView.setLayoutManager(new LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, false));
+        recyclerView.setAdapter(adapter);
+        recyclerView.addItemDecoration(divider);
+
+        OnGetPositionsResponseCallback callback = new OnGetPositionsResponseCallback(
+                new SearchResultsCallback() {
+                    @Override
+                    public void updateSearchResults(GitHubJobs jobs) {
+                        spinner.cancel();
+
+                        if (null == jobs) {
+                            jobsFound = searchResultsDbHelper.getSearchResults();
+                        }
+                        else {
+                            jobsFound = jobs;
+                            searchResultsDbHelper.saveSearchResults(jobs);
+                        }
+
+                        //TODO: Indicate no jobs found if jobsFound is empty
+                        adapter.updateDataSet(jobsFound);
+                    }
+                }
+        );
+        getPositionsResponseHandler = new JsonResponseHandler(callback);
+
+        if (null != jobRequested) {
+            if (jobRequestedChanged) {
+                spinner.show();
+                jobRequestedChanged = false;
+                AsyncRestClient.getPositions(jobRequested.getRequestParams(), getPositionsResponseHandler);
+            }
+            else {
+                //TODO: Indicate no jobs found if jobsFound is empty
+                adapter.updateDataSet(jobsFound);
+            }
         }
 
-        SearchResultsView searchResultsView = new SearchResultsView(getActivity(),
-                (RecyclerView) fragmentView.findViewById(R.id.recycler),
-                new SearchResultsViewAdapter(this));
-
-        JsonResponseHandler getPositionsResponseHandler = new JsonResponseHandler(
-                new OnGetPositionsResponseCallback(searchResultsView.getViewAdapter()));
-
-        RequestParams params = jobRequested.getRequestParams();
-        AsyncRestClient.getPositions(params, getPositionsResponseHandler);
-
-        return fragmentView;
-    }
-
-    public void onSearchResultsItemPressed(GitHubJob job) {
-        Log.d("GitHubJobs", "ViewSearchResultsFragment::onSearchResultsItemPressed");
-        if (null == mListener) { Log.d("GitHubJobs", "mListener is NULL"); }
-        if (null == job) { Log.d("GitHubJobs", "job is NULL"); }
-
-        if (null != mListener && null != job) {
-            mListener.onViewSearchResultsInteraction(job);
-        }
+        return view;
     }
 
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
         if (context instanceof OnFragmentInteractionListener) {
-            mListener = (OnFragmentInteractionListener) context;
+            interactionListener = (OnFragmentInteractionListener) context;
         } else {
-            throw new RuntimeException(context.toString()
-                    + " must implement OnFragmentInteractionListener");
+            throw new RuntimeException(context.toString() + R.string.must_implement_OFIL);
         }
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        spinner.cancel();
+        searchResultsDbHelper.close();
     }
 
     @Override
     public void onDetach() {
         super.onDetach();
-        mListener = null;
+        interactionListener = null;
+        getPositionsResponseHandler = null;
+        jobRequested = null;
+        jobsFound = null;
+        spinner = null;
+        searchResultsDbHelper = null;
+        title = null;
     }
 
     public void setJobRequested(GitHubJob jobRequested) {
         this.jobRequested = jobRequested;
+        ArrayList<String> jobFields = new ArrayList<>();
+        jobFields.add(jobRequested.getModifiedDescription());
+        jobFields.add(jobRequested.getModifiedLocation());
+        jobRequested.setDisplayTitle(jobFields);
+        title = jobRequested.getDisplayTitle();
+        jobRequestedChanged = true;
     }
 
     public interface OnFragmentInteractionListener {
         void onViewSearchResultsInteraction(GitHubJob job);
+    }
+
+    @Override
+    public String getTitle() {
+        return title;
     }
 }

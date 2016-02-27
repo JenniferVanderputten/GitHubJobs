@@ -1,24 +1,29 @@
 package com.jpvander.githubjobs.activities.searches;
 
+import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
-import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.jpvander.githubjobs.activities.BaseFragment;
 import com.jpvander.githubjobs.R;
-import com.jpvander.githubjobs.datasets.*;
-import com.jpvander.githubjobs.ui.saved_searches.SavedSearchesView;
-import com.jpvander.githubjobs.ui.saved_searches.SavedSearchesViewAdapter;
+import com.jpvander.githubjobs.datasets.helpers.SavedSearchesDbHelper;
+import com.jpvander.githubjobs.datasets.data.GitHubJob;
+import com.jpvander.githubjobs.datasets.data.GitHubJobs;
+import com.jpvander.githubjobs.ui.graphics.DividerItemDecoration;
+import com.jpvander.githubjobs.ui.adapters.SavedSearchesViewAdapter;
 
-public class ViewSavedSearchesFragment extends Fragment {
+public class ViewSavedSearchesFragment extends BaseFragment {
 
-    private OnFragmentInteractionListener mListener;
+    private static final String TITLE = "Saved Searches";
+
+    private OnFragmentInteractionListener interactionListener;
+
 
     @SuppressWarnings("unused")
     public ViewSavedSearchesFragment() {
@@ -26,78 +31,60 @@ public class ViewSavedSearchesFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedState) {
+        Activity activity = getActivity();
+        View view = inflater.inflate(R.layout.fragment_view_saved_searches, container, false);
 
-        View savedSearchesView = inflater.inflate(R.layout.fragment_view_saved_searches, container, false);
-
-        FloatingActionButton fab = (FloatingActionButton) savedSearchesView.findViewById(R.id.fab);
-        //TODO: Add ability to do new searches
+        FloatingActionButton fab = (FloatingActionButton) view.findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                interactionListener.onViewSavedSearchesInteraction(null, true);
             }
         });
 
-        GitHubJobs jobSearches = new GitHubJobs();
-        //TODO: get from disk (need to do saves)
-        jobSearches.add(0, new GitHubJob("PHP", "San Francisco"));
-        jobSearches.add(1, new GitHubJob("PHP", "New York"));
-        jobSearches.add(2, new GitHubJob("PHP", "Amsterdam"));
+        SavedSearchesDbHelper dbHelper = new SavedSearchesDbHelper(container.getContext());
 
-        new SavedSearchesView(getActivity(),
-                (RecyclerView) savedSearchesView.findViewById(R.id.recycler),
-                new SavedSearchesViewAdapter(this, jobSearches));
-
-        return savedSearchesView;
-    }
-
-    public void onSavedSearchesItemPressed(GitHubJob job) {
-        Log.d("GitHubJobs", "ViewSavedSearchesFragment::onSavedSearchesItemPressed");
-        if (null == mListener) { Log.d("GitHubJobs", "mListener is NULL"); }
-        if (null == job) { Log.d("GitHubJobs", "job is NULL"); }
-
-        if (null != mListener && null != job) {
-            mListener.onViewSavedSearchesInteraction(job);
+        if (0 >= dbHelper.getRowCount()) {
+            dbHelper.insertRow(new GitHubJob("PHP", "San Francisco"));
         }
+
+        GitHubJobs jobSearches = dbHelper.getSavedSearches();
+        dbHelper.close();
+
+        SavedSearchesViewAdapter savedSearchesAdapter = new SavedSearchesViewAdapter(interactionListener, jobSearches);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, false);
+        RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.recycler);
+        DividerItemDecoration divider = new DividerItemDecoration(activity);
+        recyclerView.setLayoutManager(layoutManager);
+        recyclerView.setAdapter(savedSearchesAdapter);
+        recyclerView.addItemDecoration(divider);
+
+        return view;
     }
 
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
         if (context instanceof OnFragmentInteractionListener) {
-            mListener = (OnFragmentInteractionListener) context;
+            interactionListener = (OnFragmentInteractionListener) context;
         } else {
-            throw new RuntimeException(context.toString()
-                    + " must implement OnFragmentInteractionListener");
+            throw new RuntimeException(context.toString() + R.string.must_implement_OFIL);
         }
     }
 
     @Override
     public void onDetach() {
         super.onDetach();
-        mListener = null;
+        interactionListener = null;
     }
-
-/*
-    @Override
-    public void onActivityCreated(Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        if (null == savedInstanceState) {
-            // job = (GitHubJob) savedInstanceState.getSerializable("job");
-        }
-    }
-
-    @Override
-    public void onSaveInstanceState(Bundle exitState) {
-        super.onSaveInstanceState(exitState);
-        // exitState.putSerializable("job", (Serializable) job);
-    }
-*/
 
     public interface OnFragmentInteractionListener {
-        void onViewSavedSearchesInteraction(GitHubJob job);
+        void onViewSavedSearchesInteraction(GitHubJob job, boolean newSearch);
+    }
+
+    @Override
+    public String getTitle() {
+        return TITLE;
     }
 }

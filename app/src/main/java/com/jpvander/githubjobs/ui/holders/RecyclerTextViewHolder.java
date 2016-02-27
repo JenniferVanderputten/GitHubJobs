@@ -1,4 +1,4 @@
-package com.jpvander.githubjobs.ui.view_holders;
+package com.jpvander.githubjobs.ui.holders;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.View;

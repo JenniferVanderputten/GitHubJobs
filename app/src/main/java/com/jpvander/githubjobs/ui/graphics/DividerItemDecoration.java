@@ -9,6 +9,8 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.LinearLayout;
 
+import com.jpvander.githubjobs.R;
+
 @SuppressWarnings("unused")
 public class DividerItemDecoration extends RecyclerView.ItemDecoration {
 
@@ -24,8 +26,11 @@ public class DividerItemDecoration extends RecyclerView.ItemDecoration {
     public DividerItemDecoration(Context context) {
         this.leftPadding = 0;
         this.rightPadding = 0;
-        this.topPadding = 0;
-        this.bottomPadding = 0;
+        float displayScale = context.getResources().getDisplayMetrics().density;
+        float margin = context.getResources().getDimension(R.dimen.list_item_horizontal_margin);
+        int paddingPx = (int) (margin * displayScale);
+        this.topPadding = paddingPx;
+        this.bottomPadding = paddingPx;
         this.listOrientation = LinearLayout.VERTICAL;
         final TypedArray styledAttributes = context.obtainStyledAttributes(ATTRS);
         divider = styledAttributes.getDrawable(0);
@@ -35,7 +40,6 @@ public class DividerItemDecoration extends RecyclerView.ItemDecoration {
     @Override
     public void getItemOffsets(Rect outerRect, View view, RecyclerView parent,
                                RecyclerView.State recyclerState) {
-
         outerRect.left += leftPadding;
         outerRect.right += rightPadding;
         outerRect.top += topPadding;
