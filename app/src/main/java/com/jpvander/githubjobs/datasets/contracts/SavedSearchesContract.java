@@ -14,7 +14,7 @@ public final class SavedSearchesContract {
 
     public static final String SQL_CREATE_TABLE = "CREATE TABLE "
             + SavedSearchesContract.TABLE_NAME + " ("
-            + Search._ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
+            + Search._ID + " INTEGER PRIMARY KEY AUTOINCREMENT" + COMMA_SEPARATOR
             + Search.COLUMN_NAME_LOCATION + TYPE_TEXT + COMMA_SEPARATOR
             + Search.COLUMN_NAME_DESCRIPTION + TYPE_TEXT
             +");";

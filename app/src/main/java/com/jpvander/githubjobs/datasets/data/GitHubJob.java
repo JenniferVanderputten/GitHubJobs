@@ -31,8 +31,10 @@ public class GitHubJob {
     private String company_logo;
     private String url;
 
+    //TODO: Cache the logo bitmaps to files and add cached file location to DB
     private Bitmap logo;        // Not part of the response; used for performance enhancement
     private String displayTitle;// Not part of the response; used for recycler and toolbar text
+    private long savedSearchId; // Not part of the response; for DB reference with search results
 
     public GitHubJob() {
         setDefaults();
@@ -199,6 +201,14 @@ public class GitHubJob {
         }
 
         return this.description;
+    }
+
+    public long getSavedSearchId() {
+        return savedSearchId;
+    }
+
+    public void setSavedSearchId(long savedSearchId) {
+        this.savedSearchId = savedSearchId;
     }
 
     public void setDisplayTitle(ArrayList<String> fieldValues) {

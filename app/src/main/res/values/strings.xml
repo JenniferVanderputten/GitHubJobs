@@ -4,4 +4,5 @@
     <string name="company_log_alt_text">Company Logo</string>
     <string name="search_button_text">Search</string>
     <string name="must_implement_OFIL"> must implement OnFragmentInteractionListener</string>
+    <string name="no_jobs_found">No jobs were found</string>
 </resources>

@@ -27,11 +27,11 @@ public class JsonResponseHandler extends JsonHttpResponseHandler {
 
     @Override
     public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject response) {
-        callback.onJsonFailureResponse(response);
+        callback.onJsonFailureResponse();
     }
 
     @Override
     public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONArray response) {
-        callback.onJsonFailureResponse(response);
+        callback.onJsonFailureResponse();
     }
 }

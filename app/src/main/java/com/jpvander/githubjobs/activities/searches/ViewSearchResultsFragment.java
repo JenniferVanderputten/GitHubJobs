@@ -9,6 +9,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.jpvander.githubjobs.activities.BaseFragment;
 import com.jpvander.githubjobs.R;
@@ -18,7 +19,7 @@ import com.jpvander.githubjobs.datasets.data.GitHubJobs;
 import com.jpvander.githubjobs.rest.request.AsyncRestClient;
 import com.jpvander.githubjobs.rest.response.JsonResponseHandler;
 import com.jpvander.githubjobs.rest.response.OnGetPositionsResponseCallback;
-import com.jpvander.githubjobs.ui.adapters.SearchResultsCallback;
+import com.jpvander.githubjobs.rest.response.SearchResultsCallback;
 import com.jpvander.githubjobs.ui.graphics.DividerItemDecoration;
 import com.jpvander.githubjobs.ui.adapters.SearchResultsViewAdapter;
 
@@ -43,12 +44,12 @@ public class ViewSearchResultsFragment extends BaseFragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedState) {
-        //TODO: Make toolbar title the job requested title
         Activity activity = getActivity();
         View view = inflater.inflate(R.layout.fragment_view_search_results, container, false);
         Context context = container.getContext();
         searchResultsDbHelper = new SearchResultsDbHelper(context);
-        RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.recycler);
+        final RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.recycler);
+        final TextView emptyView = (TextView) view.findViewById(R.id.empty_view);
 
         spinner = new ProgressDialog(activity, ProgressDialog.STYLE_SPINNER);
         spinner.setTitle("Searching GitHub Jobs...");
@@ -69,19 +70,29 @@ public class ViewSearchResultsFragment extends BaseFragment {
                     public void updateSearchResults(GitHubJobs jobs) {
                         spinner.cancel();
 
-                        if (null == jobs) {
-                            jobsFound = searchResultsDbHelper.getSearchResults();
-                        }
-                        else {
-                            jobsFound = jobs;
-                            searchResultsDbHelper.saveSearchResults(jobs);
+                        if (null != jobRequested) {
+                            if (null != jobs && 0 < jobs.size()) {
+                                jobsFound = jobs;
+                                searchResultsDbHelper.saveSearchResults(jobRequested.getSavedSearchId(), jobs);
+                            }
+                            else {
+                                jobsFound = searchResultsDbHelper.getSearchResults(jobRequested.getSavedSearchId());
+                            }
                         }
 
-                        //TODO: Indicate no jobs found if jobsFound is empty
-                        adapter.updateDataSet(jobsFound);
+                        if (null == jobsFound || 0 >= jobsFound.size()) {
+                            recyclerView.setVisibility(View.GONE);
+                            emptyView.setVisibility(View.VISIBLE);
+                        }
+                        else {
+                            recyclerView.setVisibility(View.VISIBLE);
+                            emptyView.setVisibility(View.GONE);
+                            adapter.updateDataSet(jobsFound);
+                        }
                     }
                 }
         );
+
         getPositionsResponseHandler = new JsonResponseHandler(callback);
 
         if (null != jobRequested) {
@@ -91,7 +102,6 @@ public class ViewSearchResultsFragment extends BaseFragment {
                 AsyncRestClient.getPositions(jobRequested.getRequestParams(), getPositionsResponseHandler);
             }
             else {
-                //TODO: Indicate no jobs found if jobsFound is empty
                 adapter.updateDataSet(jobsFound);
             }
         }

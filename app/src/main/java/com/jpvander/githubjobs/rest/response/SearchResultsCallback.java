@@ -1,4 +1,4 @@
-package com.jpvander.githubjobs.ui.adapters;
+package com.jpvander.githubjobs.rest.response;
 
 import com.jpvander.githubjobs.datasets.data.GitHubJobs;
 

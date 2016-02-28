@@ -10,11 +10,13 @@ public final class SearchResultsContract {
     public static final String DATABASE_NAME = "SearchResults.db";
     public static final String TABLE_NAME = "search_results";
     private static final String TYPE_TEXT = " TEXT";
+    private static final String TYPE_INTEGER = " INTEGER";
     private static final String COMMA_SEPARATOR = ",";
 
     public static final String SQL_CREATE_TABLE = "CREATE TABLE "
             + TABLE_NAME + " ("
-            + Result._ID + " INTEGER PRIMARY KEY,"
+            + Result._ID + TYPE_INTEGER + " PRIMARY KEY AUTOINCREMENT" + COMMA_SEPARATOR
+            + Result.COLUMN_NAME_SAVED_SEARCH_ID + COMMA_SEPARATOR
             + Result.COLUMN_NAME_TITLE + TYPE_TEXT + COMMA_SEPARATOR
             + Result.COLUMN_NAME_DESCRIPTION + TYPE_TEXT + COMMA_SEPARATOR
             + Result.COLUMN_NAME_COMPANY + TYPE_TEXT + COMMA_SEPARATOR
@@ -30,6 +32,7 @@ public final class SearchResultsContract {
 
     public static abstract class Result implements BaseColumns {
 
+        public static final String COLUMN_NAME_SAVED_SEARCH_ID = "saved_search_id";
         public static final String COLUMN_NAME_TITLE = "title";
         public static final String COLUMN_NAME_DESCRIPTION = "description";
         public static final String COLUMN_NAME_COMPANY = "company";

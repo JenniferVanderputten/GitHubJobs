@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 
 import com.jpvander.githubjobs.activities.BaseFragment;
 import com.jpvander.githubjobs.R;
@@ -56,12 +55,10 @@ public class ViewSearchesActivity extends AppCompatActivity implements
 
     public void onViewSavedSearchesInteraction(GitHubJob job, boolean newSearch) {
         if (newSearch) {
-            Log.d("GitHubJobs", "New search");
             if (null == newSearchFragment) { newSearchFragment = new NewSearchFragment(); }
             transactFragment(newSearchFragment, newSearchFragment.getTitle(), false, true);
         }
         else {
-            Log.d("GitHubJobs", "Existing search");
             if (null == searchResultsFragment) { searchResultsFragment = new ViewSearchResultsFragment(); }
             searchResultsFragment.setJobRequested(job);
             transactFragment(searchResultsFragment, searchResultsFragment.getTitle(), false, true);

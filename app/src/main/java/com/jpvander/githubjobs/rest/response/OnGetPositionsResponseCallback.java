@@ -5,7 +5,6 @@ import android.util.Log;
 import com.google.gson.Gson;
 import com.jpvander.githubjobs.datasets.data.GitHubJobs;
 import com.jpvander.githubjobs.datasets.data.GitHubJob;
-import com.jpvander.githubjobs.ui.adapters.SearchResultsCallback;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -20,16 +19,15 @@ public class OnGetPositionsResponseCallback implements OnJsonResponseCallback {
     }
 
     public void onJsonSuccessResponse(JSONObject response) {
-        // TODO: Indicate in UI that no jobs were found since JSONObject is not expected?
         if (null == response) {
             Log.e("GitHubJobs", "OnGetPositionsResponseCallback::onJsonSuccessResponse was null");
         }
+
+        callback.updateSearchResults(null);
     }
 
     public void onJsonSuccessResponse(JSONArray response) {
         GitHubJobs jobs = new GitHubJobs();
-
-        // TODO: Indicate no jobs found if response is empty
 
         for (int searchIndex = 0; searchIndex < response.length(); searchIndex++) {
             JSONObject savedSearch;
@@ -39,10 +37,7 @@ public class OnGetPositionsResponseCallback implements OnJsonResponseCallback {
 
                 savedSearch = response.getJSONObject(searchIndex);
 
-                if (null == savedSearch || 0 >= savedSearch.length()) {
-                    //TODO: Indicate in UI that no jobs were found
-                }
-                else {
+                if (null != savedSearch && 0 < savedSearch.length()) {
                     GitHubJob job = gson.fromJson(savedSearch.toString(), GitHubJob.class);
 
                     if (null != job) {
@@ -65,19 +60,7 @@ public class OnGetPositionsResponseCallback implements OnJsonResponseCallback {
         //TODO: Add pagination?  We'll need a UI change, e.g. a "get more results" button.
     }
 
-    public void onJsonFailureResponse(JSONObject response) {
-        if (null == response) {
-            Log.e("GitHubJobs", "OnGetPositionsResponseCallback::onJsonFailureResponse was null");
-        }
-
-        callback.updateSearchResults(null);
-    }
-
-    public void onJsonFailureResponse(JSONArray response) {
-        if (null == response) {
-            Log.e("GitHubJobs", "OnGetPositionsResponseCallback::onJsonFailureResponse was null");
-        }
-
+    public void onJsonFailureResponse() {
         callback.updateSearchResults(null);
     }
 }

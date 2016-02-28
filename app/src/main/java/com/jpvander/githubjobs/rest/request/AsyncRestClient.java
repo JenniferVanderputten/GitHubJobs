@@ -10,6 +10,8 @@ public class AsyncRestClient {
     private static final String JSON_RESPONSE_APPEND = ".json";
     private static final AsyncHttpClient client = new AsyncHttpClient();
 
+    //TODO: Detect when network is known by the system to be unavailable so we don't have to time out
+
     public static void getPositions(RequestParams params, AsyncHttpResponseHandler responseHandler) {
         get(params, responseHandler);
     }

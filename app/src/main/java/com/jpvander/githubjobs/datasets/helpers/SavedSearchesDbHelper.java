@@ -37,8 +37,9 @@ public class SavedSearchesDbHelper extends SQLiteOpenHelper {
         savedSearchValues.put(SavedSearchesContract.Search.COLUMN_NAME_DESCRIPTION, job.getDescription());
 
         SQLiteDatabase database = this.getWritableDatabase();
-        database.insert(SavedSearchesContract.TABLE_NAME, null, savedSearchValues);
+        long id = database.insert(SavedSearchesContract.TABLE_NAME, null, savedSearchValues);
         database.close();
+        job.setSavedSearchId(id);
     }
 
     public GitHubJobs getSavedSearches() {
@@ -50,7 +51,11 @@ public class SavedSearchesDbHelper extends SQLiteOpenHelper {
 
         while (cursor.moveToNext()) {
             if (3 >= cursor.getColumnCount()) {
-                savedSearches.add(new GitHubJob(cursor.getString(2), cursor.getString(1)));
+                GitHubJob job = new GitHubJob();
+                job.setSavedSearchId(cursor.getLong(0));
+                job.setLocation(cursor.getString(1));
+                job.setDescription(cursor.getString(2));
+                savedSearches.add(job);
             }
         }
 
