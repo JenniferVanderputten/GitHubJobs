@@ -30,13 +30,19 @@ public class ViewSearchesActivity extends AppCompatActivity implements
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        if (findViewById(R.id.fragment_container) != null) {
-            if (null == savedSearchesFragment) {
-                savedSearchesFragment = new ViewSavedSearchesFragment();
-            }
+        if (null == savedSearchesFragment) {
+            savedSearchesFragment = new ViewSavedSearchesFragment();
+        }
 
+        if (null == savedInstanceState) {
             transactFragment(savedSearchesFragment, savedSearchesFragment.getTitle(), false, false);
         }
+        else {
+            BaseFragment fragment = (BaseFragment) getSupportFragmentManager()
+                    .findFragmentById(R.id.fragment_container);
+            setActionBar(fragment.getTitle(), false);
+        }
+
     }
 
     @Override
@@ -108,7 +114,7 @@ public class ViewSearchesActivity extends AppCompatActivity implements
             transaction.addToBackStack(null);
         }
 
-        setActionBar(actionBarTitle, addToBackStack);
         transaction.commit();
+        setActionBar(actionBarTitle, addToBackStack);
     }
 }

@@ -2,9 +2,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingBottom="@dimen/list_item_horizontal_margin"
-    android:paddingRight="@dimen/list_item_horizontal_margin"
-    android:paddingLeft="@dimen/list_item_horizontal_margin"
+    android:paddingBottom="@dimen/container_horizontal_margin"
+    android:paddingRight="@dimen/container_horizontal_margin"
+    android:paddingLeft="@dimen/container_horizontal_margin"
     tools:context=".activities.searches.ViewSearchResultsFragment">
 
     <android.support.v7.widget.RecyclerView

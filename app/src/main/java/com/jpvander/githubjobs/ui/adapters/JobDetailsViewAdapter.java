@@ -32,9 +32,10 @@ public class JobDetailsViewAdapter extends RecyclerView.Adapter<RecyclerTableHol
     public void onBindViewHolder(RecyclerTableHolder holder, int position) {
         //TODO: Modify layout to show logo and info and allow user to view multiple jobs at once
         GitHubJob job = jobsSelected.get(position);
-        holder.addTableRowWithHtmlContent("Location:", job.getCompany());
-        holder.addTableRowWithHtmlContent("Website:", job.getCompany_url());
+        holder.addTableRowWithHtmlContent("Company:", job.getCompany());
+        holder.addTableRowWithHtmlContent("Location:", job.getLocation());
         holder.addTableRowWithHtmlContent("Title:", job.getTitle());
+        holder.addTableRowWithHtmlContent("Website:", job.getCompany_url());
         holder.addTableRowWithHtmlContent("Description:", job.getDescription());
     }
 

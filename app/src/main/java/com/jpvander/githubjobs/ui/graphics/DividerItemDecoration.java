@@ -27,7 +27,7 @@ public class DividerItemDecoration extends RecyclerView.ItemDecoration {
         this.leftPadding = 0;
         this.rightPadding = 0;
         float displayScale = context.getResources().getDisplayMetrics().density;
-        float margin = context.getResources().getDimension(R.dimen.list_item_horizontal_margin);
+        float margin = context.getResources().getDimension(R.dimen.container_horizontal_margin);
         int paddingPx = (int) (margin * displayScale);
         this.topPadding = paddingPx;
         this.bottomPadding = paddingPx;

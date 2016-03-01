@@ -12,8 +12,8 @@
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:paddingLeft="@dimen/list_item_horizontal_margin"
-            android:paddingRight="@dimen/list_item_horizontal_margin"
+            android:paddingLeft="@dimen/container_horizontal_margin"
+            android:paddingRight="@dimen/container_horizontal_margin"
             android:layout_gravity="center_vertical|start"
             android:text="@string/example_text"
             android:id="@+id/textView"
@@ -24,8 +24,8 @@
             android:layout_height="wrap_content"
             android:id="@+id/imageView"
             android:contentDescription="@string/company_log_alt_text"
-            android:paddingLeft="@dimen/list_item_horizontal_margin"
-            android:paddingRight="@dimen/list_item_horizontal_margin"
+            android:paddingLeft="@dimen/container_horizontal_margin"
+            android:paddingRight="@dimen/container_horizontal_margin"
             android:layout_gravity="center_vertical|end"/>
 
     </LinearLayout>

@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.google.gson.Gson;
 import com.jpvander.githubjobs.activities.BaseFragment;
 import com.jpvander.githubjobs.R;
 import com.jpvander.githubjobs.datasets.helpers.SearchResultsDbHelper;
@@ -36,6 +37,7 @@ public class ViewSearchResultsFragment extends BaseFragment {
     private ProgressDialog spinner;
     private SearchResultsDbHelper searchResultsDbHelper;
     private String title;
+    private SearchResultsViewAdapter adapter;
 
     @SuppressWarnings("unused")
     public ViewSearchResultsFragment() {
@@ -43,11 +45,24 @@ public class ViewSearchResultsFragment extends BaseFragment {
     }
 
     @Override
+    public void onCreate(Bundle savedState) {
+        super.onCreate(savedState);
+        if (null != savedState) {
+            String jobRequestedAsJSON = savedState.getString("jobRequested");
+            jobRequested = new Gson().fromJson(jobRequestedAsJSON, GitHubJob.class);
+            jobRequestedChanged = savedState.getBoolean("jobRequestedChanged");
+            title = savedState.getString("title");
+            searchResultsDbHelper = new SearchResultsDbHelper(getContext());
+            jobsFound = searchResultsDbHelper.getSearchResults(jobRequested.getSavedSearchId());
+        }
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedState) {
         Activity activity = getActivity();
         View view = inflater.inflate(R.layout.fragment_view_search_results, container, false);
-        Context context = container.getContext();
-        searchResultsDbHelper = new SearchResultsDbHelper(context);
+        Context context = getContext();
+        if (null == searchResultsDbHelper) { searchResultsDbHelper = new SearchResultsDbHelper(context); }
         final RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.recycler);
         final TextView emptyView = (TextView) view.findViewById(R.id.empty_view);
 
@@ -55,8 +70,7 @@ public class ViewSearchResultsFragment extends BaseFragment {
         spinner.setTitle("Searching GitHub Jobs...");
         spinner.setCancelable(true);
 
-        final SearchResultsViewAdapter adapter = new SearchResultsViewAdapter(
-                interactionListener,
+        adapter = new SearchResultsViewAdapter(interactionListener,
                 context.getResources().getDisplayMetrics().density);
 
         DividerItemDecoration divider = new DividerItemDecoration(activity);
@@ -101,9 +115,16 @@ public class ViewSearchResultsFragment extends BaseFragment {
                 jobRequestedChanged = false;
                 AsyncRestClient.getPositions(jobRequested.getRequestParams(), getPositionsResponseHandler);
             }
-            else {
-                adapter.updateDataSet(jobsFound);
-            }
+        }
+
+        if (null == jobsFound || 0 >= jobsFound.size()) {
+            recyclerView.setVisibility(View.GONE);
+            emptyView.setVisibility(View.VISIBLE);
+        }
+        else {
+            recyclerView.setVisibility(View.VISIBLE);
+            emptyView.setVisibility(View.GONE);
+            adapter.updateDataSet(jobsFound);
         }
 
         return view;
@@ -136,6 +157,22 @@ public class ViewSearchResultsFragment extends BaseFragment {
         spinner = null;
         searchResultsDbHelper = null;
         title = null;
+        adapter = null;
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outputState) {
+        String jobRequestedAsJSON = new Gson().toJson(jobRequested);
+        outputState.putString("jobRequested", jobRequestedAsJSON);
+        outputState.putString("title", title);
+        outputState.putBoolean("jobRequestedChanged", jobRequestedChanged);
+        super.onSaveInstanceState(outputState);
+    }
+
+    @Override
+    public void onActivityCreated(Bundle inputState) {
+        super.onActivityCreated(inputState);
+        adapter.updateDataSet(jobsFound);
     }
 
     public void setJobRequested(GitHubJob jobRequested) {

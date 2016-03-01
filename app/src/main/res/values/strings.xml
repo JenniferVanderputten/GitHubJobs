@@ -5,4 +5,5 @@
     <string name="search_button_text">Search</string>
     <string name="must_implement_OFIL"> must implement OnFragmentInteractionListener</string>
     <string name="no_jobs_found">No jobs were found</string>
+    <string name="new_search_instructions">If you do not want to filter by a certain criteria, just leave it blank.</string>
 </resources>

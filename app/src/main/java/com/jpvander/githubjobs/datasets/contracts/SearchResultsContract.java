@@ -17,11 +17,13 @@ public final class SearchResultsContract {
             + TABLE_NAME + " ("
             + Result._ID + TYPE_INTEGER + " PRIMARY KEY AUTOINCREMENT" + COMMA_SEPARATOR
             + Result.COLUMN_NAME_SAVED_SEARCH_ID + COMMA_SEPARATOR
-            + Result.COLUMN_NAME_TITLE + TYPE_TEXT + COMMA_SEPARATOR
-            + Result.COLUMN_NAME_DESCRIPTION + TYPE_TEXT + COMMA_SEPARATOR
+            + Result.COLUMN_NAME_JOB_ID + COMMA_SEPARATOR
             + Result.COLUMN_NAME_COMPANY + TYPE_TEXT + COMMA_SEPARATOR
-            + Result.COLUMN_NAME_COMPANY_LOGO + TYPE_TEXT + COMMA_SEPARATOR
-            + Result.COLUMN_NAME_COMPANY_URL + TYPE_TEXT
+            + Result.COLUMN_NAME_LOCATION + TYPE_TEXT + COMMA_SEPARATOR
+            + Result.COLUMN_NAME_TITLE + TYPE_TEXT + COMMA_SEPARATOR
+            + Result.COLUMN_NAME_COMPANY_URL + TYPE_TEXT + COMMA_SEPARATOR
+            + Result.COLUMN_NAME_DESCRIPTION + TYPE_TEXT + COMMA_SEPARATOR
+            + Result.COLUMN_NAME_COMPANY_LOGO + TYPE_TEXT
             +");";
 
     public static final String SQL_DELETE_TABLE = "DROP TABLE IF EXISTS " + TABLE_NAME;
@@ -33,10 +35,12 @@ public final class SearchResultsContract {
     public static abstract class Result implements BaseColumns {
 
         public static final String COLUMN_NAME_SAVED_SEARCH_ID = "saved_search_id";
-        public static final String COLUMN_NAME_TITLE = "title";
-        public static final String COLUMN_NAME_DESCRIPTION = "description";
+        public static final String COLUMN_NAME_JOB_ID = "job_id";
         public static final String COLUMN_NAME_COMPANY = "company";
-        public static final String COLUMN_NAME_COMPANY_LOGO = "company_logo";
+        public static final String COLUMN_NAME_LOCATION = "location";
+        public static final String COLUMN_NAME_TITLE = "title";
         public static final String COLUMN_NAME_COMPANY_URL = "company_url";
+        public static final String COLUMN_NAME_DESCRIPTION = "description";
+        public static final String COLUMN_NAME_COMPANY_LOGO = "company_logo";
     }
 }

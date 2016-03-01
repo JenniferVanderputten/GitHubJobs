@@ -22,7 +22,7 @@ public class RecyclerTableHolder extends RecyclerView.ViewHolder {
         this.tableLayout = (TableLayout) view.findViewById(R.id.tableLayout);
         float displayScale = view.getResources().getDisplayMetrics().density;
         this.paddingPx = (int) (view.getResources()
-                .getDimension(R.dimen.list_item_horizontal_margin) * displayScale);
+                .getDimension(R.dimen.container_horizontal_margin) * displayScale);
         this.context = view.getContext();
     }
 
