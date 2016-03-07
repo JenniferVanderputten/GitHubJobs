@@ -2,23 +2,26 @@
 <android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/avs_root_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    tools:context=".activities.searches.ViewSearchesActivity">
+    tools:context=".activity.ViewSearchesActivity">
 
     <LinearLayout
+        android:id="@+id/avs_linear_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
 
         <android.support.design.widget.AppBarLayout
+            android:id="@+id/avs_app_bar_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:theme="@style/AppTheme.AppBarOverlay">
 
             <android.support.v7.widget.Toolbar
-                android:id="@+id/toolbar"
+                android:id="@+id/avs_toolbar"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
                 android:background="?attr/colorPrimary"
@@ -29,8 +32,8 @@
         <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@color/white"
-            android:id="@+id/fragment_container">
+            android:background="@android:color/white"
+            android:id="@+id/avs_fragment_container">
         </FrameLayout>
 
     </LinearLayout>

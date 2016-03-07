@@ -11,7 +11,6 @@ public class JsonResponseHandler extends JsonHttpResponseHandler {
     private final OnJsonResponseCallback callback;
 
     public JsonResponseHandler(OnJsonResponseCallback callback) {
-
         this.callback = callback;
     }
 
@@ -26,12 +25,22 @@ public class JsonResponseHandler extends JsonHttpResponseHandler {
     }
 
     @Override
+    public void onSuccess(int statusCode, Header[] headers, String response) {
+        callback.onJsonSuccessResponse(response);
+    }
+
+    @Override
     public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject response) {
         callback.onJsonFailureResponse();
     }
 
     @Override
     public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONArray response) {
+        callback.onJsonFailureResponse();
+    }
+
+    @Override
+    public void onFailure(int statusCode, Header[] headers, String response, Throwable throwable) {
         callback.onJsonFailureResponse();
     }
 }

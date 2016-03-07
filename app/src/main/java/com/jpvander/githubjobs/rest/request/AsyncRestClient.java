@@ -8,6 +8,7 @@ public class AsyncRestClient {
 
     private static final String BASE_URL = "https://jobs.github.com/positions";
     private static final String JSON_RESPONSE_APPEND = ".json";
+    private static final int TIMEOUT_IN_MILLISECONDS = 7 * 1000;
     private static final AsyncHttpClient client = new AsyncHttpClient();
 
     //TODO: Detect when network is known by the system to be unavailable so we don't have to time out
@@ -17,7 +18,7 @@ public class AsyncRestClient {
     }
 
     private static void get(RequestParams params, AsyncHttpResponseHandler responseHandler) {
-        client.setTimeout(7 * 1000);
+        client.setTimeout(TIMEOUT_IN_MILLISECONDS);
         client.get(BASE_URL + JSON_RESPONSE_APPEND, params, responseHandler);
     }
 }

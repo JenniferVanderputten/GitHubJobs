@@ -1,9 +1,23 @@
 <resources>
+    <string name="add_search_hint">Add a search</string>
     <string name="app_name">GitHub Jobs</string>
-    <string name="example_text">Example</string>
     <string name="company_log_alt_text">Company Logo</string>
-    <string name="search_button_text">Search</string>
+    <string name="default_description">PHP</string>
+    <string name="default_location">San Francisco</string>
+    <string name="example_text">Example</string>
+    <string name="get_location_hint">Use your current location</string>
+    <string name="input_description_hint">e.g. PHP or JAVA</string>
+    <string name="input_location_hint">City/Zip/Remote</string>
+    <string name="label_formatter">%s: </string>
+    <string name="job_details_title">Job Details</string>
     <string name="must_implement_OFIL"> must implement OnFragmentInteractionListener</string>
-    <string name="no_jobs_found">No jobs were found</string>
     <string name="new_search_instructions">If you do not want to filter by a certain criteria, just leave it blank.</string>
+    <string name="new_search_title">New Search</string>
+    <string name="no_jobs_found">No jobs were found</string>
+    <string name="saved_searches_title">Saved Searches%s</string>
+    <string name="search_button_text">Search Jobs</string>
+    <string name="search_page_hint">Search this page</string>
+    <string name="search_results_title">Search Results</string>
+    <string name="spinner_getting_location">Getting location&#8230;</string>
+    <string name="spinner_searching_jobs">Searching GitHub Jobs&#8230;</string>
 </resources>

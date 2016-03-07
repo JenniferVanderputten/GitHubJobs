@@ -3,14 +3,19 @@ package com.jpvander.githubjobs.rest.response;
 import android.util.Log;
 
 import com.google.gson.Gson;
-import com.jpvander.githubjobs.datasets.data.GitHubJobs;
-import com.jpvander.githubjobs.datasets.data.GitHubJob;
+import com.jpvander.githubjobs.dataset.data.GitHubJobs;
+import com.jpvander.githubjobs.dataset.data.GitHubJob;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
+
 public class OnGetPositionsResponseCallback implements OnJsonResponseCallback {
+
+    private static final String LOG_LABEL = "GitHubJobs";
+    private static final String UNEXPECTED_RESPONSE = "Response was not expected: ";
 
     private final SearchResultsCallback callback;
 
@@ -18,12 +23,22 @@ public class OnGetPositionsResponseCallback implements OnJsonResponseCallback {
         this.callback = callback;
     }
 
-    public void onJsonSuccessResponse(JSONObject response) {
-        if (null == response) {
-            Log.e("GitHubJobs", "OnGetPositionsResponseCallback::onJsonSuccessResponse was null");
-        }
+    // Fail if there is anything other than the expected JSONArray response
 
-        callback.updateSearchResults(null);
+    public void onJsonSuccessResponse(JSONObject response) {
+        Log.e(LOG_LABEL, UNEXPECTED_RESPONSE + response.toString());
+        onJsonFailureResponse();
+    }
+
+    public void onJsonSuccessResponse(String response) {
+        try {
+            JSONArray jsonArray = new JSONArray(response);
+            onJsonSuccessResponse(jsonArray);
+        }
+        catch (JSONException exception) {
+            Log.e(LOG_LABEL, exception.getMessage(), exception);
+            onJsonFailureResponse();
+        }
     }
 
     public void onJsonSuccessResponse(JSONArray response) {
@@ -39,19 +54,16 @@ public class OnGetPositionsResponseCallback implements OnJsonResponseCallback {
 
                 if (null != savedSearch && 0 < savedSearch.length()) {
                     GitHubJob job = gson.fromJson(savedSearch.toString(), GitHubJob.class);
-
-                    if (null != job) {
-                        jobs.add(job);
-                    }
-                    else {
-                        jobs.add(new GitHubJob(
-                                savedSearch.getString("description"),
-                                savedSearch.getString("location")));
-                    }
+                    ArrayList<String> jobFields = new ArrayList<>();
+                    jobFields.add(job.getCompany());
+                    jobFields.add(job.getTitle());
+                    job.setDisplayTitle(jobFields);
+                    jobs.add(job);
                 }
             }
             catch (JSONException exception) {
-                Log.e("GitHubJobs", "Invalid JSON in response");
+                Log.e(LOG_LABEL, exception.getMessage(), exception);
+                onJsonFailureResponse();
             }
         }
 

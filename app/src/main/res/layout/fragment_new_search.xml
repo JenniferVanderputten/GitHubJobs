@@ -1,13 +1,14 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/fns_root_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingBottom="@dimen/container_horizontal_margin"
-    android:paddingLeft="@dimen/container_horizontal_margin"
-    android:paddingRight="@dimen/container_horizontal_margin"
-    tools:context=".activities.searches.NewSearchFragment">
+    android:paddingLeft="@dimen/small_margin"
+    android:paddingRight="@dimen/small_margin"
+    tools:context=".fragment.NewSearchFragment">
 
     <LinearLayout
+        android:id="@+id/fns_linear_layout"
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -16,44 +17,34 @@
         <TableLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingLeft="@dimen/container_horizontal_margin"
-            android:paddingRight="@dimen/container_horizontal_margin"
-            android:paddingTop="@dimen/container_vertical_margin"
-            android:paddingBottom="@dimen/container_vertical_margin"
-            android:id="@+id/tableLayout"></TableLayout>
+            android:paddingLeft="@dimen/small_margin"
+            android:paddingRight="@dimen/small_margin"
+            android:paddingBottom="@dimen/large_margin"
+            android:id="@+id/fns_table_layout"></TableLayout>
 
         <Button
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/search_button_text"
-            android:id="@+id/searchButton"
+            android:id="@+id/fns_search_button"
             android:enabled="true"
             android:visibility="visible"
             android:layout_gravity="center_horizontal"
             android:gravity="center_vertical|center_horizontal" />
 
         <TextView
-            android:id="@+id/instructions"
+            android:id="@+id/fns_instructions"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:paddingTop="@dimen/container_vertical_margin"
-            android:paddingBottom="@dimen/container_vertical_margin"
-            android:paddingLeft="@dimen/container_horizontal_margin"
-            android:paddingRight="@dimen/container_horizontal_margin"
+            android:paddingTop="@dimen/large_margin"
+            android:paddingBottom="@dimen/large_margin"
+            android:paddingLeft="@dimen/small_margin"
+            android:paddingRight="@dimen/small_margin"
             android:gravity="center"
             android:textSize="18sp"
             android:textStyle="italic"
             android:text="@string/new_search_instructions" />
 
     </LinearLayout>
-
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/fab"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="top|end"
-        android:layout_margin="@dimen/fab_margin"
-        android:tint="@android:color/white"
-        android:src="@android:drawable/ic_menu_compass" />
 
 </FrameLayout>
