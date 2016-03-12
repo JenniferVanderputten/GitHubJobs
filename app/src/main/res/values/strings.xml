@@ -14,7 +14,7 @@
     <string name="new_search_instructions">If you do not want to filter by a certain criteria, just leave it blank.</string>
     <string name="new_search_title">New Search</string>
     <string name="no_jobs_found">No jobs were found</string>
-    <string name="saved_searches_title">Saved Searches%s</string>
+    <string name="saved_searches_title">Saved Searches</string>
     <string name="search_button_text">Search Jobs</string>
     <string name="search_page_hint">Search this page</string>
     <string name="search_results_title">Search Results</string>

@@ -26,7 +26,6 @@ import java.util.HashMap;
 public class NewSearchFragment extends BaseFragment {
 
     private String title;
-    private static final boolean SHOULD_SHOW_SEARCH = false;
     private static final boolean SHOULD_SHOW_LOCATION = true;
 
     private OnFragmentInteractionListener interactionListener;
@@ -177,11 +176,6 @@ public class NewSearchFragment extends BaseFragment {
 
     private String getTitle() {
         return title;
-    }
-
-    @Override
-    public boolean shouldShowMenuSearch() {
-        return SHOULD_SHOW_SEARCH;
     }
 
     @Override

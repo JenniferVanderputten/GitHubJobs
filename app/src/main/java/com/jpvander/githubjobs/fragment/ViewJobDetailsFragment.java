@@ -2,10 +2,8 @@ package com.jpvander.githubjobs.fragment;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.content.pm.ApplicationInfo;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,7 +20,6 @@ import java.util.ArrayList;
 
 public class ViewJobDetailsFragment extends BaseFragment {
 
-    private static final boolean SHOULD_SHOW_SEARCH = false;
     private static final String JOB_STATE_LABEL = "jobSelected";
 
     private JobDetailsViewAdapter viewAdapter;
@@ -47,11 +44,10 @@ public class ViewJobDetailsFragment extends BaseFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedState) {
         if (null == dbHelper) { dbHelper = new SearchResultsDbHelper(getContext()); }
         retrieveState(savedState);
-        printStatePropertiesIfDebug();
         Activity activity = getActivity();
         View view = inflater.inflate(R.layout.fragment_view_job_details, container, false);
         if (null == viewAdapter) { viewAdapter = new JobDetailsViewAdapter(); }
-        RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.fvjd_recycler);
+        RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.job_details_recycler);
         LinearLayoutManager layoutManager = new LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, false);
         DividerItemDecoration divider = new DividerItemDecoration(activity);
         recyclerView.setLayoutManager(layoutManager);
@@ -91,24 +87,6 @@ public class ViewJobDetailsFragment extends BaseFragment {
         super.onSaveInstanceState(savedState);
     }
 
-    private void printStatePropertiesIfDebug() {
-        if (0 != (getActivity().getApplicationInfo().flags &= ApplicationInfo.FLAG_DEBUGGABLE)) {
-            Log.d("GitHubJobs", System.identityHashCode(this) + " VJD accepting intent? " + isAcceptingSearchIntent());
-
-            if (null == jobsSelected) {
-                Log.d("GitHubJobs", System.identityHashCode(this) + " VJD jobRequested is NULL");
-            }
-            else {
-                if (0 < jobsSelected.size()) {
-                    Log.d("GitHubJobs", System.identityHashCode(this) + " VJD jobRequested: " + jobsSelected.get(0).getDisplayTitle());
-                }
-                else {
-                    Log.d("GitHubJobs", System.identityHashCode(this) + " VJD jobRequested is empty");
-                }
-            }
-        }
-    }
-
     private void retrieveState(Bundle savedState) {
         if (null != savedState) {
             ArrayList<String> jobIDs = savedState.getStringArrayList(JOB_STATE_LABEL);
@@ -136,10 +114,5 @@ public class ViewJobDetailsFragment extends BaseFragment {
 
             savedState.putStringArrayList(JOB_STATE_LABEL, jobIDs);
         }
-    }
-
-    @Override
-    public boolean shouldShowMenuSearch() {
-        return SHOULD_SHOW_SEARCH;
     }
 }

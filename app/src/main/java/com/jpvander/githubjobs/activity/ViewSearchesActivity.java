@@ -2,8 +2,6 @@ package com.jpvander.githubjobs.activity;
 
 import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
-import android.app.SearchManager;
-import android.content.Intent;
 import android.location.Location;
 import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentTransaction;
@@ -37,6 +35,8 @@ public class ViewSearchesActivity extends AppCompatActivity implements
     private LocationServiceHelper locationHelper;
     private ProgressDialog spinner;
     private Menu menu;
+
+    // TODO: Handle pre-23 backup of the databases
 
     @Override
     protected void onCreate(Bundle savedState) {
@@ -112,10 +112,6 @@ public class ViewSearchesActivity extends AppCompatActivity implements
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.mab_menu_search:
-                onSearchRequested();
-                return true;
-
             case R.id.mab_menu_add:
                 onViewSavedSearchesInteraction(null, true);
                 return true;
@@ -140,24 +136,6 @@ public class ViewSearchesActivity extends AppCompatActivity implements
             default:
                 return super.onOptionsItemSelected(item);
         }
-    }
-
-    @Override
-    protected void onNewIntent(Intent intent) {
-        if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
-            String query = intent.getStringExtra(SearchManager.QUERY);
-            BaseFragment fragment = (BaseFragment) getSupportFragmentManager()
-                    .findFragmentById(R.id.avs_fragment_container);
-
-            if (fragment.isAcceptingSearchIntent()) {
-                GitHubJobs matchingJobs = fragment.handleSearchQuery(query);
-                BaseFragment newFragment = fragment.clone(matchingJobs, query);
-                fragment.setAcceptsSearchIntent(false);
-                transactFragment(newFragment, false, true);
-            }
-        }
-
-        setIntent(intent);
     }
 
     @Override
@@ -222,7 +200,6 @@ public class ViewSearchesActivity extends AppCompatActivity implements
         }
 
         if (null != fragment && null != menu) {
-            menu.findItem(R.id.mab_menu_search).setVisible(fragment.shouldShowMenuSearch());
             menu.findItem(R.id.mab_menu_add).setVisible(fragment.shouldShowMenuAdd());
             menu.findItem(R.id.mab_menu_location).setVisible(fragment.shouldShowMenuLocation());
         }

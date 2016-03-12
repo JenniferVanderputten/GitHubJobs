@@ -19,7 +19,7 @@ public class RecyclerTableHolder extends RecyclerView.ViewHolder {
 
     public RecyclerTableHolder(View view) {
         super(view);
-        this.tableLayout = (TableLayout) view.findViewById(R.id.istv_table_layout);
+        this.tableLayout = (TableLayout) view.findViewById(R.id.table_item_table_layout);
         float displayScale = view.getResources().getDisplayMetrics().density;
         this.paddingPx = (int) (view.getResources()
                 .getDimension(R.dimen.small_margin) * displayScale);

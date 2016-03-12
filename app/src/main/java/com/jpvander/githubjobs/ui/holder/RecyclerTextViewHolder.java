@@ -12,6 +12,6 @@ public class RecyclerTextViewHolder extends RecyclerView.ViewHolder {
 
     public RecyclerTextViewHolder(View view) {
         super(view);
-        this.textView = (TextView) view.findViewById(R.id.istxv_text_view);
+        this.textView = (TextView) view.findViewById(R.id.text_item_text_view);
     }
 }

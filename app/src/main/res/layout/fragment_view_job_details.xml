@@ -1,6 +1,6 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/fvjd_root_layout"
+    android:id="@+id/job_details_root_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:paddingBottom="@dimen/small_margin"
@@ -9,7 +9,7 @@
     tools:context=".fragment.ViewJobDetailsFragment">
 
     <android.support.v7.widget.RecyclerView
-        android:id="@+id/fvjd_recycler"
+        android:id="@+id/job_details_recycler"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:scrollbars="vertical"/>

@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/iiatv_root_layout"
+    android:id="@+id/image_text_item_root_layout"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
     <LinearLayout
-        android:id="@+id/iiatv_linear_layout"
+        android:id="@+id/image_text_item_linear_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="horizontal">
@@ -18,13 +18,13 @@
             android:paddingRight="@dimen/small_margin"
             android:layout_gravity="center_vertical|start"
             android:text="@string/example_text"
-            android:id="@+id/iiatv_text_view"
+            android:id="@+id/image_text_item_text_view"
             android:layout_weight="1"/>
 
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/iiatv_image_view"
+            android:id="@+id/image_text_item_image_view"
             android:contentDescription="@string/company_log_alt_text"
             android:paddingLeft="@dimen/small_margin"
             android:paddingRight="@dimen/small_margin"

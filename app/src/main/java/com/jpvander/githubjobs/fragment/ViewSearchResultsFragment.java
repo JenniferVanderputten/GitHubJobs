@@ -4,11 +4,9 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.pm.ApplicationInfo;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -32,9 +30,7 @@ import java.util.ArrayList;
 
 public class ViewSearchResultsFragment extends BaseFragment {
 
-    private static final String QUERY_STATE_LABEL = "searchQuery";
     private static final String JOB_REQUESTED_STATE_LABEL = "jobRequested";
-    private final static String SEARCH_INTENT_APPLIED_STATE_LABEL = "acceptsSearchIntent";
 
     private OnFragmentInteractionListener interactionListener;
     private GitHubJob jobRequested;
@@ -43,9 +39,6 @@ public class ViewSearchResultsFragment extends BaseFragment {
     private SearchResultsDbHelper dbHelper;
     private String title;
     private SearchResultsViewAdapter viewAdapter;
-    private String searchQuery;
-    private boolean acceptsSearchIntent = true;
-    private boolean should_show_search = true;
 
     @SuppressWarnings("unused")
     @SuppressLint("unused")
@@ -64,11 +57,10 @@ public class ViewSearchResultsFragment extends BaseFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedState) {
         if (null == dbHelper) { dbHelper = new SearchResultsDbHelper(getContext()); }
         retrieveState(savedState);
-        printStatePropertiesIfDebug();
         Activity activity = getActivity();
         View view = inflater.inflate(R.layout.fragment_view_search_results, container, false);
-        final RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.fvsr_recycler);
-        final TextView emptyView = (TextView) view.findViewById(R.id.fvsr_empty_view);
+        final RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.search_results_recycler);
+        final TextView emptyView = (TextView) view.findViewById(R.id.search_results_empty_view);
 
         spinner = new ProgressDialog(activity, ProgressDialog.STYLE_SPINNER);
         spinner.setTitle(getResources().getString(R.string.spinner_searching_jobs));
@@ -148,15 +140,6 @@ public class ViewSearchResultsFragment extends BaseFragment {
         super.onSaveInstanceState(savedState);
     }
 
-    @Override
-    public boolean shouldShowMenuSearch() {
-        return should_show_search;
-    }
-
-    private boolean isFilteredBySearch() {
-        return (null != searchQuery && !searchQuery.isEmpty());
-    }
-
     private boolean areJobsFound() {
         return (null != jobsFound && 0 < jobsFound.size());
     }
@@ -183,7 +166,6 @@ public class ViewSearchResultsFragment extends BaseFragment {
     private void setContextualTitle() {
         if (null != jobRequested) {
             this.title = jobRequested.getDisplayTitle();
-            if (isFilteredBySearch()) { this.title = this.title + ": "  + searchQuery; }
         }
         else {
             this.title = getResources().getString(R.string.search_results_title);
@@ -197,7 +179,6 @@ public class ViewSearchResultsFragment extends BaseFragment {
         if (areJobsFound()) {
             recyclerView.setVisibility(View.VISIBLE);
             emptyView.setVisibility(View.GONE);
-            if (isFilteredBySearch()) { setJobsFound(handleSearchQuery(searchQuery)); }
             viewAdapter.updateDataSet(jobsFound);
         }
         else {
@@ -208,43 +189,8 @@ public class ViewSearchResultsFragment extends BaseFragment {
         setContextualTitle();
     }
 
-    private void setSearchQuery(String searchQuery) {
-        this.searchQuery = searchQuery;
-
-        if (isFilteredBySearch()) {
-            acceptsSearchIntent = false;
-            should_show_search = false;
-        }
-    }
-
     public void setJobsFound(GitHubJobs jobsFound) {
         this.jobsFound = jobsFound;
-    }
-
-    @Override
-    public GitHubJobs handleSearchQuery(String query) {
-        GitHubJobs matchingJobs = new GitHubJobs();
-
-        if (null != jobsFound) {
-            for (int jobIndex = 0; jobIndex < jobsFound.size(); jobIndex++) {
-                GitHubJob job = jobsFound.get(jobIndex);
-
-                if (job.getDisplayTitle().toLowerCase().contains(query.toLowerCase())) {
-                    matchingJobs.add(job);
-                }
-            }
-        }
-
-        return matchingJobs;
-    }
-
-    @Override
-    public ViewSearchResultsFragment clone(GitHubJobs allJobs, String query) {
-        ViewSearchResultsFragment newFragment = new ViewSearchResultsFragment();
-        newFragment.setJobsFound(allJobs);
-        newFragment.setSearchQuery(query);
-        if (null != jobRequested) { newFragment.setJobRequested(jobRequested); }
-        return newFragment;
     }
 
     private GitHubJobs setSearchIds(long searchId, GitHubJobs jobs) {
@@ -262,34 +208,13 @@ public class ViewSearchResultsFragment extends BaseFragment {
         if (null != savedState) {
             String jobRequestedAsJSON = new Gson().toJson(jobRequested);
             savedState.putString(JOB_REQUESTED_STATE_LABEL, jobRequestedAsJSON);
-            savedState.putString(QUERY_STATE_LABEL, searchQuery);
-            savedState.putBoolean(SEARCH_INTENT_APPLIED_STATE_LABEL, acceptsSearchIntent);
-        }
-    }
-
-    private void printStatePropertiesIfDebug() {
-        if (0 != (getActivity().getApplicationInfo().flags &= ApplicationInfo.FLAG_DEBUGGABLE)) {
-            Log.d("GitHubJobs", System.identityHashCode(this) + " VSR searchQuery: " + searchQuery);
-            Log.d("GitHubJobs", System.identityHashCode(this) + " VSR accepting intent? " + isAcceptingSearchIntent());
-
-
-            if (null == jobRequested) {
-                Log.d("GitHubJobs", System.identityHashCode(this) + " VSR jobRequested is NULL");
-            }
-            else {
-                Log.d("GitHubJobs", System.identityHashCode(this) + " VSR savedSearchId: " + jobRequested.getSavedSearchId());
-                Log.d("GitHubJobs", System.identityHashCode(this) + " VSR jobRequested: " + jobRequested.getDisplayTitle());
-            }
         }
     }
 
     private void retrieveState(Bundle savedState) {
-        printStatePropertiesIfDebug();
         if (null != savedState) {
             String jobRequestedAsJSON = savedState.getString(JOB_REQUESTED_STATE_LABEL);
             setJobRequested(new Gson().fromJson(jobRequestedAsJSON, GitHubJob.class));
-            setSearchQuery(savedState.getString(QUERY_STATE_LABEL));
-            setAcceptsSearchIntent(savedState.getBoolean(SEARCH_INTENT_APPLIED_STATE_LABEL));
 
             if (null != jobRequested) {
                 if (null == dbHelper) { dbHelper = new SearchResultsDbHelper(getContext()); }
@@ -298,15 +223,5 @@ public class ViewSearchResultsFragment extends BaseFragment {
 
             setContextualTitle();
         }
-    }
-
-    @Override
-    public void setAcceptsSearchIntent(boolean searchIntentApplied) {
-        this.acceptsSearchIntent = searchIntentApplied;
-    }
-
-    @Override
-    public boolean isAcceptingSearchIntent() {
-        return acceptsSearchIntent;
     }
 }

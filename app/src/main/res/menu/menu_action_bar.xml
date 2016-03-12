@@ -10,12 +10,6 @@
         app:showAsAction="ifRoom"/>
 
     <item
-        android:id="@+id/mab_menu_search"
-        android:icon="@mipmap/ic_menu_search_holo_dark"
-        android:title="@string/search_page_hint"
-        app:showAsAction="ifRoom"/>
-
-    <item
         android:id="@+id/mab_menu_location"
         android:icon="@mipmap/perm_group_location"
         android:title="@string/get_location_hint"

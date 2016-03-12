@@ -1,6 +1,6 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/fvsr_root_layout"
+    android:id="@+id/search_results_root_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:paddingBottom="@dimen/small_margin"
@@ -9,13 +9,13 @@
     tools:context=".fragment.ViewSearchResultsFragment">
 
     <android.support.v7.widget.RecyclerView
-        android:id="@+id/fvsr_recycler"
+        android:id="@+id/search_results_recycler"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:scrollbars="vertical"/>
 
     <TextView
-        android:id="@+id/fvsr_empty_view"
+        android:id="@+id/search_results_empty_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:gravity="center"

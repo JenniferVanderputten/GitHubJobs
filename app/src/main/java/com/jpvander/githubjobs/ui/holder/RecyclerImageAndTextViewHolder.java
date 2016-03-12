@@ -19,8 +19,8 @@ public class RecyclerImageAndTextViewHolder extends RecyclerView.ViewHolder {
 
     public RecyclerImageAndTextViewHolder(View view) {
         super(view);
-        this.imageView = (ImageView) view.findViewById(R.id.iiatv_image_view);
-        this.textView = (TextView) view.findViewById(R.id.iiatv_text_view);
+        this.imageView = (ImageView) view.findViewById(R.id.image_text_item_image_view);
+        this.textView = (TextView) view.findViewById(R.id.image_text_item_text_view);
         preferredImageWidth = PREFERRED_IMAGE_WIDTH;
         context = view.getContext();
     }

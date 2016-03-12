@@ -1,6 +1,6 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/fvss_root_layout"
+    android:id="@+id/saved_searches_root_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:paddingBottom="@dimen/small_margin"
@@ -9,7 +9,7 @@
     tools:context=".fragment.ViewSavedSearchesFragment">
 
     <android.support.v7.widget.RecyclerView
-        android:id="@+id/fvss_recycler"
+        android:id="@+id/saved_searches_recycler"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:scrollbars="vertical"/>
