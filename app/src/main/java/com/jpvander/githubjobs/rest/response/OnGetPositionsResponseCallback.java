@@ -10,8 +10,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.ArrayList;
-
 public class OnGetPositionsResponseCallback implements OnJsonResponseCallback {
 
     private static final String LOG_LABEL = "GitHubJobs";
@@ -54,10 +52,6 @@ public class OnGetPositionsResponseCallback implements OnJsonResponseCallback {
 
                 if (null != savedSearch && 0 < savedSearch.length()) {
                     GitHubJob job = gson.fromJson(savedSearch.toString(), GitHubJob.class);
-                    ArrayList<String> jobFields = new ArrayList<>();
-                    jobFields.add(job.getCompany());
-                    jobFields.add(job.getTitle());
-                    job.setDisplayTitle(jobFields);
                     jobs.add(job);
                 }
             }

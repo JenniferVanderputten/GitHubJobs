@@ -25,8 +25,6 @@ import com.jpvander.githubjobs.rest.response.SearchResultsCallback;
 import com.jpvander.githubjobs.ui.graphics.DividerItemDecoration;
 import com.jpvander.githubjobs.ui.adapter.SearchResultsViewAdapter;
 
-import java.util.ArrayList;
-
 
 public class ViewSearchResultsFragment extends BaseFragment {
 
@@ -80,7 +78,7 @@ public class ViewSearchResultsFragment extends BaseFragment {
 
                         if (null != jobRequested) {
                             if (null != jobs && 0 < jobs.size()) {
-                                setJobsFound(setSearchIds(jobRequested.getSavedSearchId(), jobs));
+                                setJobsFound(setSearchIDs(jobRequested.getSavedSearchId(), jobs));
                                 dbHelper.saveSearchResults(jobRequested.getSavedSearchId(), jobsFound);
                             }
                             else {
@@ -147,10 +145,6 @@ public class ViewSearchResultsFragment extends BaseFragment {
     public void setJobRequested(GitHubJob jobRequested) {
         if (null != jobRequested) {
             this.jobRequested = jobRequested;
-            ArrayList<String> jobFields = new ArrayList<>();
-            jobFields.add(jobRequested.getModifiedDescription());
-            jobFields.add(jobRequested.getModifiedLocation());
-            jobRequested.setDisplayTitle(jobFields);
             setContextualTitle();
         }
     }
@@ -165,7 +159,7 @@ public class ViewSearchResultsFragment extends BaseFragment {
 
     private void setContextualTitle() {
         if (null != jobRequested) {
-            this.title = jobRequested.getDisplayTitle();
+            this.title = jobRequested.getSearchTitle();
         }
         else {
             this.title = getResources().getString(R.string.search_results_title);
@@ -190,10 +184,32 @@ public class ViewSearchResultsFragment extends BaseFragment {
     }
 
     public void setJobsFound(GitHubJobs jobsFound) {
-        this.jobsFound = jobsFound;
+        GitHubJobs filteredJobs = new GitHubJobs();
+
+        if (null != jobsFound) {
+            if (jobRequested.isFullTimeOnly()) {
+                for (int jobIndex = 0; jobIndex < jobsFound.size(); jobIndex++) {
+                    if (jobsFound.get(jobIndex).isFullTimeOnly()) {
+                        filteredJobs.add(jobsFound.get(jobIndex));
+                    }
+                }
+            }
+            else if (jobRequested.isPartTimeOnly()) {
+                for (int jobIndex = 0; jobIndex < jobsFound.size(); jobIndex++) {
+                    if (jobsFound.get(jobIndex).isPartTimeOnly()) {
+                        filteredJobs.add(jobsFound.get(jobIndex));
+                    }
+                }
+            }
+            else {
+                filteredJobs = jobsFound;
+            }
+        }
+
+        this.jobsFound = filteredJobs;
     }
 
-    private GitHubJobs setSearchIds(long searchId, GitHubJobs jobs) {
+    private GitHubJobs setSearchIDs(long searchId, GitHubJobs jobs) {
         GitHubJobs modifiedJobs = new GitHubJobs();
 
         for (int jobIndex = 0; jobIndex < jobs.size(); jobIndex++) {

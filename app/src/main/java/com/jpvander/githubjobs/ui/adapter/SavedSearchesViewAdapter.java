@@ -38,7 +38,7 @@ public class SavedSearchesViewAdapter extends RecyclerView.Adapter<RecyclerTextV
     @Override
     public void onBindViewHolder(RecyclerTextViewHolder holder, final int position) {
         if (null != jobs && position < jobs.size()) {
-            holder.textView.setText(jobs.get(position).getDisplayTitle());
+            holder.textView.setText(jobs.get(position).getSearchTitle());
             holder.textView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {

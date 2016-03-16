@@ -26,7 +26,8 @@ public final class SearchResultsContract {
             + Result.COLUMN_NAME_TITLE + TYPE_TEXT + COMMA_SEPARATOR
             + Result.COLUMN_NAME_WEBSITE + TYPE_TEXT + COMMA_SEPARATOR
             + Result.COLUMN_NAME_DESCRIPTION + TYPE_TEXT + COMMA_SEPARATOR
-            + Result.COLUMN_NAME_LOGO_URL + TYPE_TEXT
+            + Result.COLUMN_NAME_LOGO_URL + TYPE_TEXT + COMMA_SEPARATOR
+            + Result.COLUMN_NAME_TYPE + TYPE_TEXT
             +");";
 
     public static final String SQL_DELETE_TABLE = "DROP TABLE IF EXISTS " + TABLE_NAME;
@@ -48,5 +49,6 @@ public final class SearchResultsContract {
         public static final String COLUMN_NAME_WEBSITE = GitHubJob.WEBSITE_LABEL;
         public static final String COLUMN_NAME_DESCRIPTION = GitHubJob.DESCRIPTION_LABEL;
         public static final String COLUMN_NAME_LOGO_URL = GitHubJob.LOGO_URL_LABEL;
+        public static final String COLUMN_NAME_TYPE = GitHubJob.TYPE_LABEL;
     }
 }

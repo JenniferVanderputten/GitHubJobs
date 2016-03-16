@@ -5,10 +5,13 @@
     <string name="default_description">PHP</string>
     <string name="default_location">San Francisco</string>
     <string name="example_text">Example</string>
+    <string name="location_label">Location:</string>
+    <string name="location_hint">City/Zip/Remote</string>
+    <string name="description_label">Description:</string>
+    <string name="description_hint">e.g. PHP or JAVA</string>
+    <string name="full_time_label">Full Time:</string>
+    <string name="part_time_label">Part Time:</string>
     <string name="get_location_hint">Use your current location</string>
-    <string name="input_description_hint">e.g. PHP or JAVA</string>
-    <string name="input_location_hint">City/Zip/Remote</string>
-    <string name="label_formatter">%s: </string>
     <string name="job_details_title">Job Details</string>
     <string name="must_implement_OFIL"> must implement OnFragmentInteractionListener</string>
     <string name="new_search_instructions">If you do not want to filter by a certain criteria, just leave it blank.</string>

@@ -35,6 +35,7 @@ public class JobDetailsViewAdapter extends RecyclerView.Adapter<RecyclerTableHol
         holder.addRowWithHtmlContent(GitHubJob.LOCATION_LABEL + ":", job.getLocation());
         holder.addRowWithHtmlContent(GitHubJob.TITLE_LABEL + ":", job.getTitle());
         holder.addRowWithHtmlContent(GitHubJob.WEBSITE_LABEL + ":", job.getCompany_url());
+        holder.addRowWithHtmlContent(GitHubJob.TYPE_LABEL + ":", job.getType());
         holder.addRowWithHtmlContent(GitHubJob.DESCRIPTION_LABEL + ":", job.getDescription());
     }
 

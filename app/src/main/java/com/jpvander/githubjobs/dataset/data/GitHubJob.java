@@ -6,16 +6,19 @@ import com.loopj.android.http.RequestParams;
 
 import org.apache.commons.lang3.StringUtils;
 
-import java.lang.reflect.Field;
-import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 
 @SuppressWarnings("unused")
 @SuppressLint("unused")
 public class GitHubJob {
 
-    public final static String ALL_JOBS_TITLE = "All jobs";
-    public final static String ALL_LOCATIONS_TITLE = "All locations";
+    // Static definitions for a unified UX across screens
+    public final static String ALL_JOBS = "All Jobs";
+    public final static String FULL_TIME = "Full Time";
+    public final static String PART_TIME = "Part Time";
+    public final static String FULL_OR_PART_TIME = "Full or Part Time";
+    public final static String UNKNOWN = "Unknown";
+
     public final static String LOCATION_LABEL = "Location";
     public final static String DESCRIPTION_LABEL = "Description";
     public final static String ID_LABEL = "ID";
@@ -24,7 +27,11 @@ public class GitHubJob {
     public final static String WEBSITE_LABEL = "Website";
     public final static String TITLE_LABEL = "Title";
     public final static String SAVED_SEARCH_ID_LABEL = "Search";
+    public final static String FULL_TIME_LABEL = "Full_Time";
+    public final static String PART_TIME_LABEL = "Part_Time";
+    public final static String TYPE_LABEL = "Type";
 
+    // Expected fields from the response on GET position(s)
     private String id;
     private String created_at;
     private String title;
@@ -43,17 +50,20 @@ public class GitHubJob {
     private String company_logo;
     private String url;
 
-    private String displayTitle;// Not part of the response; used for recycler and toolbar text
-    private long savedSearchId; // Not part of the response; for DB reference with search results
+    // The following properties are not part of the expected response for GET on position(s)
+    private Boolean part_time;
+    private long savedSearchId;
 
+    // Constructors and their helpers
     public GitHubJob() {
         setDefaults();
     }
 
-    public GitHubJob(String description, String location) {
+    public GitHubJob(String description, String location, boolean full_time, boolean part_time) {
         setDefaults();
         this.description = description;
         this.location = location;
+        setFullAndPartTime(full_time, part_time);
     }
 
     private void setDefaults() {
@@ -63,8 +73,9 @@ public class GitHubJob {
         location = "";
         latitude = "";
         longitude = "";
-        full_time = false;
-        type = "";
+        full_time = true;
+        part_time = true;
+        type = FULL_OR_PART_TIME;
         description = "";
         how_to_apply = "";
         company = "";
@@ -73,16 +84,13 @@ public class GitHubJob {
         url = "";
     }
 
+    // Methods
     public String getDescription() {
         return description;
     }
 
     public void setDescription(String description) {
         this.description = description;
-
-        if (null == this.description || this.description.isEmpty()) {
-            this.description = ALL_JOBS_TITLE;
-        }
     }
 
     public String getLocation() {
@@ -109,12 +117,43 @@ public class GitHubJob {
         this.longitude = longitude;
     }
 
-    public Boolean getFull_time() {
-        return full_time;
+    public Boolean isFullTime() {
+        return (type.equalsIgnoreCase(FULL_TIME) ||
+                type.equalsIgnoreCase(FULL_OR_PART_TIME));
     }
 
-    public void setFull_time(Boolean full_time) {
+    public Boolean isFullTimeOnly() { return type.equalsIgnoreCase(FULL_TIME); }
+
+    public Boolean isPartTime() {
+        return (type.equalsIgnoreCase(PART_TIME) ||
+                type.equalsIgnoreCase(FULL_OR_PART_TIME));
+    }
+
+    public Boolean isPartTimeOnly() { return type.equalsIgnoreCase(PART_TIME); }
+
+    public Boolean isFullOrPartTime() {
+
+        return (type.equalsIgnoreCase(PART_TIME) ||
+                type.equalsIgnoreCase(FULL_TIME) ||
+                type.equalsIgnoreCase(FULL_OR_PART_TIME));
+    }
+
+    public void setFullAndPartTime(Boolean full_time, Boolean part_time) {
         this.full_time = full_time;
+        this.part_time = part_time;
+
+        if (full_time && part_time) {
+            this.type = FULL_OR_PART_TIME;
+        }
+        else if (full_time) {
+            this.type = FULL_TIME;
+        }
+        else if (part_time) {
+            this.type = PART_TIME;
+        }
+        else {
+            this.type = UNKNOWN;
+        }
     }
 
     public String getId() {
@@ -189,22 +228,6 @@ public class GitHubJob {
         this.title = title;
     }
 
-    public String getModifiedLocation() {
-        if (null == this.location || this.location.isEmpty()) {
-            return ALL_LOCATIONS_TITLE;
-        }
-
-        return this.location;
-    }
-
-    public String getModifiedDescription() {
-        if (null == this.description || this.description.isEmpty()) {
-            return ALL_JOBS_TITLE;
-        }
-
-        return this.description;
-    }
-
     public long getSavedSearchId() {
         return savedSearchId;
     }
@@ -213,31 +236,66 @@ public class GitHubJob {
         this.savedSearchId = savedSearchId;
     }
 
-    public void setDisplayTitle(ArrayList<String> fieldValues) {
-        this.displayTitle = StringUtils.join(fieldValues, " - ");
+    public String getSearchTitle() {
+        ArrayList<String> titleComponents = new ArrayList<>();
+        titleComponents.add(getLocation());
+        titleComponents.add(getDescription());
+
+        if (isFullTimeOnly()) {
+            titleComponents.add(FULL_TIME);
+        }
+        else if (isPartTimeOnly()) {
+            titleComponents.add(PART_TIME);
+        }
+        else if (isFullOrPartTime()){
+            titleComponents.add(FULL_OR_PART_TIME);
+        }
+        else {
+            titleComponents.add(UNKNOWN);
+        }
+
+        return join(titleComponents, " - ");
     }
 
-    public String getDisplayTitle() {
-        if (null == displayTitle) { displayTitle = ""; }
-        return displayTitle;
+    public String getJobTitle() {
+        ArrayList<String> titleComponents = new ArrayList<>();
+        titleComponents.add(getTitle());
+        titleComponents.add(getCompany());
+
+        if (isFullTimeOnly()) {
+            titleComponents.add(FULL_TIME);
+        }
+        else {
+            titleComponents.add(FULL_OR_PART_TIME);
+        }
+
+        return join(titleComponents, " - ");
     }
 
-    public RequestParams getRequestParams() {
-        RequestParams params = new RequestParams();
+    private String join(ArrayList<String> components, String separator) {
+        ArrayList<String> nonEmptyComponents = new ArrayList<>();
+        boolean hasWildCard = false;
 
-        for (Field field : getClass().getDeclaredFields()) {
-            if (!Modifier.isStatic(field.getModifiers())) {
-                try {
-                    String name = field.getName();
-                    Object value = field.get(this);
-                    params.put(name, value);
-                }
-                catch (IllegalAccessException exception) {
-                    // We must catch this to satisfy the compiler. Ignore anything inaccessible.
+        for (String component : components) {
+            if (null != component && !component.isEmpty()) {
+                nonEmptyComponents.add(component);
+            }
+            else {
+                if (!hasWildCard) {
+                    nonEmptyComponents.add(ALL_JOBS);
+                    hasWildCard = true;
                 }
             }
         }
 
+        return StringUtils.join(nonEmptyComponents, separator);
+    }
+
+    public RequestParams getRequestParams() {
+        RequestParams params = new RequestParams();
+        params.add(LOCATION_LABEL.toLowerCase(), location);
+        params.add(DESCRIPTION_LABEL.toLowerCase(), description);
+        params.add(FULL_TIME_LABEL.toLowerCase(), full_time.toString());
         return params;
     }
 }

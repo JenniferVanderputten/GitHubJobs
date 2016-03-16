@@ -43,7 +43,7 @@ public class SearchResultsViewAdapter extends RecyclerView.Adapter<RecyclerImage
                 .load(jobs.get(position).getCompany_logo())
                 .transform(new ImageTransform(density, holder.getPreferredImageWidth()))
                 .into(holder.imageView);
-        holder.textView.setText(jobs.get(position).getDisplayTitle());
+        holder.textView.setText(jobs.get(position).getJobTitle());
         holder.textView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

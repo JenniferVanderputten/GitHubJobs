@@ -10,8 +10,6 @@ import com.jpvander.githubjobs.dataset.contract.SearchResultsContract;
 import com.jpvander.githubjobs.dataset.data.GitHubJob;
 import com.jpvander.githubjobs.dataset.data.GitHubJobs;
 
-import java.util.ArrayList;
-
 public class SearchResultsDbHelper extends SQLiteOpenHelper {
 
     public SearchResultsDbHelper(Context context) {
@@ -67,7 +65,6 @@ public class SearchResultsDbHelper extends SQLiteOpenHelper {
         GitHubJob job = new GitHubJob();
         int columnCount = cursor.getColumnCount();
         int columnIndex = 0;
-
         if (columnIndex++ < columnCount) { job.setSavedSearchId(cursor.getLong(columnIndex)); }
         if (columnIndex++ < columnCount) { job.setId(cursor.getString(columnIndex)); }
         if (columnIndex++ < columnCount) { job.setCompany(cursor.getString(columnIndex)); }
@@ -76,11 +73,7 @@ public class SearchResultsDbHelper extends SQLiteOpenHelper {
         if (columnIndex++ < columnCount) { job.setCompany_url(cursor.getString(columnIndex)); }
         if (columnIndex++ < columnCount) { job.setDescription(cursor.getString(columnIndex)); }
         if (columnIndex++ < columnCount) { job.setCompany_logo(cursor.getString(columnIndex)); }
-
-        ArrayList<String> jobFields = new ArrayList<>();
-        jobFields.add(job.getCompany());
-        jobFields.add(job.getTitle());
-        job.setDisplayTitle(jobFields);
+        if (columnIndex++ < columnCount) { job.setType(cursor.getString(columnIndex)); }
         return job;
     }
 
@@ -115,6 +108,7 @@ public class SearchResultsDbHelper extends SQLiteOpenHelper {
         values.put(SearchResultsContract.Result.COLUMN_NAME_WEBSITE, job.getCompany_url());
         values.put(SearchResultsContract.Result.COLUMN_NAME_DESCRIPTION, job.getDescription());
         values.put(SearchResultsContract.Result.COLUMN_NAME_LOGO_URL, job.getCompany_logo());
+        values.put(SearchResultsContract.Result.COLUMN_NAME_TYPE, job.getType());
         return values;
     }
 }

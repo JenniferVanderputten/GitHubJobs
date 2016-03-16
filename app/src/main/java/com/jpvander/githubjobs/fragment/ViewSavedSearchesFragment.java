@@ -43,7 +43,9 @@ public class ViewSavedSearchesFragment extends BaseFragment {
         if (0 >= dbHelper.getRowCount()) {
             dbHelper.insertRow(new GitHubJob(
                     resources.getString(R.string.default_description),
-                    resources.getString(R.string.default_location)));
+                    resources.getString(R.string.default_location),
+                    true,
+                    true));
         }
 
         setJobSearches(dbHelper.getSavedSearches());

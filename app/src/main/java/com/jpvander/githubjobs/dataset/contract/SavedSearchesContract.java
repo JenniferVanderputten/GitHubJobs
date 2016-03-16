@@ -19,7 +19,9 @@ public final class SavedSearchesContract {
             + SavedSearchesContract.TABLE_NAME + " ("
             + Search._ID + " INTEGER PRIMARY KEY AUTOINCREMENT" + COMMA_SEPARATOR
             + Search.COLUMN_NAME_LOCATION + TYPE_TEXT + COMMA_SEPARATOR
-            + Search.COLUMN_NAME_DESCRIPTION + TYPE_TEXT
+            + Search.COLUMN_NAME_DESCRIPTION + TYPE_TEXT + COMMA_SEPARATOR
+            + Search.COLUMN_NAME_FULL_TIME + TYPE_TEXT + COMMA_SEPARATOR
+            + Search.COLUMN_NAME_PART_TIME + TYPE_TEXT
             +");";
 
     public static final String SQL_DELETE_TABLE = "DROP TABLE IF EXISTS " + TABLE_NAME;
@@ -34,5 +36,7 @@ public final class SavedSearchesContract {
 
         public static final String COLUMN_NAME_LOCATION = GitHubJob.LOCATION_LABEL;
         public static final String COLUMN_NAME_DESCRIPTION = GitHubJob.DESCRIPTION_LABEL;
+        public static final String COLUMN_NAME_FULL_TIME = GitHubJob.FULL_TIME_LABEL;
+        public static final String COLUMN_NAME_PART_TIME = GitHubJob.PART_TIME_LABEL;
     }
 }

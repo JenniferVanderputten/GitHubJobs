@@ -11,8 +11,6 @@ import com.jpvander.githubjobs.dataset.contract.SavedSearchesContract;
 import com.jpvander.githubjobs.dataset.data.GitHubJob;
 import com.jpvander.githubjobs.dataset.data.GitHubJobs;
 
-import java.util.ArrayList;
-
 public class SavedSearchesDbHelper extends SQLiteOpenHelper {
 
     public SavedSearchesDbHelper(Context context) {
@@ -37,6 +35,8 @@ public class SavedSearchesDbHelper extends SQLiteOpenHelper {
         ContentValues savedSearchValues = new ContentValues();
         savedSearchValues.put(SavedSearchesContract.Search.COLUMN_NAME_LOCATION, job.getLocation());
         savedSearchValues.put(SavedSearchesContract.Search.COLUMN_NAME_DESCRIPTION, job.getDescription());
+        savedSearchValues.put(SavedSearchesContract.Search.COLUMN_NAME_FULL_TIME, job.isFullTime().toString());
+        savedSearchValues.put(SavedSearchesContract.Search.COLUMN_NAME_PART_TIME, job.isPartTime().toString());
 
         SQLiteDatabase database = this.getWritableDatabase();
         long id = database.insert(SavedSearchesContract.TABLE_NAME, null, savedSearchValues);
@@ -53,15 +53,18 @@ public class SavedSearchesDbHelper extends SQLiteOpenHelper {
 
         while (cursor.moveToNext()) {
             GitHubJob job = new GitHubJob();
+            Boolean fullTime = false;
+            Boolean partTime = false;
+
             int columnCount = cursor.getColumnCount();
             int columnIndex = -1;
             if (columnIndex++ < columnCount) { job.setSavedSearchId(cursor.getLong(columnIndex)); }
             if (columnIndex++ < columnCount) { job.setLocation(cursor.getString(columnIndex)); }
             if (columnIndex++ < columnCount) { job.setDescription(cursor.getString(columnIndex)); }
-            ArrayList<String> jobFields = new ArrayList<>();
-            jobFields.add(job.getModifiedDescription());
-            jobFields.add(job.getModifiedLocation());
-            job.setDisplayTitle(jobFields);
+            if (columnIndex++ < columnCount) { fullTime = Boolean.valueOf(cursor.getString(columnIndex)); }
+            if (columnIndex++ < columnCount) { partTime = Boolean.valueOf(cursor.getString(columnIndex)); }
+
+            job.setFullAndPartTime(fullTime, partTime);
             savedSearches.add(job);
         }
 
