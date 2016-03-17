@@ -34,7 +34,6 @@ public class ViewSavedSearchesFragment extends BaseFragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedState) {
-        //TODO: Add delete button to each item
         Activity activity = getActivity();
         View view = inflater.inflate(R.layout.fragment_view_saved_searches, container, false);
         SavedSearchesDbHelper dbHelper = new SavedSearchesDbHelper(container.getContext());
@@ -52,7 +51,7 @@ public class ViewSavedSearchesFragment extends BaseFragment {
         dbHelper.close();
 
         if (null == viewAdapter) {
-            viewAdapter = new SavedSearchesViewAdapter(interactionListener, jobSearches);
+            viewAdapter = new SavedSearchesViewAdapter(interactionListener, jobSearches, view.getContext());
         }
         else {
             viewAdapter.setJobs(jobSearches);

@@ -11,10 +11,10 @@ import com.jpvander.githubjobs.R;
 import com.jpvander.githubjobs.fragment.ViewSearchResultsFragment.OnFragmentInteractionListener;
 import com.jpvander.githubjobs.dataset.data.GitHubJobs;
 import com.jpvander.githubjobs.ui.graphics.ImageTransform;
-import com.jpvander.githubjobs.ui.holder.RecyclerImageAndTextViewHolder;
+import com.jpvander.githubjobs.ui.holder.RecyclerTextViewAndImageViewHolder;
 import com.squareup.picasso.Picasso;
 
-public class SearchResultsViewAdapter extends RecyclerView.Adapter<RecyclerImageAndTextViewHolder> {
+public class SearchResultsViewAdapter extends RecyclerView.Adapter<RecyclerTextViewAndImageViewHolder> {
 
     private final OnFragmentInteractionListener listener;
     private GitHubJobs jobs;
@@ -27,15 +27,15 @@ public class SearchResultsViewAdapter extends RecyclerView.Adapter<RecyclerImage
     }
 
     @Override
-    public RecyclerImageAndTextViewHolder onCreateViewHolder(ViewGroup parent, int type) {
+    public RecyclerTextViewAndImageViewHolder onCreateViewHolder(ViewGroup parent, int type) {
         int imageAndTextView = R.layout.item_image_and_text_view;
         Context context = parent.getContext();
         View parentView = LayoutInflater.from(context).inflate(imageAndTextView, parent, false);
-        return new RecyclerImageAndTextViewHolder(parentView);
+        return new RecyclerTextViewAndImageViewHolder(parentView);
     }
 
     @Override
-    public void onBindViewHolder(final RecyclerImageAndTextViewHolder holder, final int position) {
+    public void onBindViewHolder(final RecyclerTextViewAndImageViewHolder holder, final int position) {
         //TODO: Add a placeholder image for companies that have not uploaded their logo?
         holder.imageView.setImageBitmap(null);
         holder.textView.setText("");

@@ -1,22 +1,24 @@
 package com.jpvander.githubjobs.dataset.data;
 
-import java.util.HashMap;
+import java.util.ArrayList;
 
 public class GitHubJobs
 {
-    private final HashMap<Integer, GitHubJob> jobs;
+    private final ArrayList<GitHubJob> jobs;
 
     public GitHubJobs() {
-        this.jobs = new HashMap<>();
+        this.jobs = new ArrayList<>();
     }
 
-    public void add(GitHubJob gitHubJob) {
-        this.jobs.put(this.jobs.size(), gitHubJob);
+    public void add(GitHubJob job) {
+        jobs.add(job);
     }
+
+    public void remove(int position) { jobs.remove(position); }
 
     public GitHubJob get(int position) {
-        if (jobs.containsKey(position)) {
-            return this.jobs.get(position);
+        if (position < size()) {
+            return jobs.get(position);
         }
         else {
             return new GitHubJob();

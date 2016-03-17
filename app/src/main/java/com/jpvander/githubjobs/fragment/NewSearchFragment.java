@@ -46,6 +46,7 @@ public class NewSearchFragment extends BaseFragment {
         title = resources.getString(R.string.new_search_title);
         ((ViewSearchesActivity) getActivity()).setActionBarTitle(getTitle());
         newJob = new GitHubJob();
+
         locationInput = (TextView) view.findViewById(R.id.new_search_location_value);
         descriptionInput = (TextView) view.findViewById(R.id.new_search_description_value);
         fullTimeInput = (CheckBox) view.findViewById(R.id.new_search_full_time_value);
@@ -63,6 +64,10 @@ public class NewSearchFragment extends BaseFragment {
                 savedSearchesDbHelper.insertRow(newJob);
                 savedSearchesDbHelper.close();
                 interactionListener.onNewSearchInteraction(newJob);
+                locationInput.setText("");
+                descriptionInput.setText("");
+                fullTimeInput.setChecked(true);
+                partTimeInput.setChecked(true);
             }
         });
 

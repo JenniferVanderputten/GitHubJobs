@@ -8,7 +8,7 @@ import android.widget.ImageView;
 
 import com.jpvander.githubjobs.R;
 
-public class RecyclerImageAndTextViewHolder extends RecyclerView.ViewHolder {
+public class RecyclerTextViewAndImageViewHolder extends RecyclerView.ViewHolder {
 
     private static final float PREFERRED_IMAGE_WIDTH = 140.0f;
 
@@ -17,7 +17,7 @@ public class RecyclerImageAndTextViewHolder extends RecyclerView.ViewHolder {
     private final float preferredImageWidth;
     private final Context context;
 
-    public RecyclerImageAndTextViewHolder(View view) {
+    public RecyclerTextViewAndImageViewHolder(View view) {
         super(view);
         this.imageView = (ImageView) view.findViewById(R.id.image_text_item_image_view);
         this.textView = (TextView) view.findViewById(R.id.image_text_item_text_view);

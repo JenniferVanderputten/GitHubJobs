@@ -25,6 +25,7 @@ public final class SavedSearchesContract {
             +");";
 
     public static final String SQL_DELETE_TABLE = "DROP TABLE IF EXISTS " + TABLE_NAME;
+    public static final String SQL_DELETE_RECORD = "DELETE FROM " + TABLE_NAME + " WHERE ";
     public static final String SQL_SELECT_ALL = "SELECT * FROM " + TABLE_NAME;
 
     // To prevent accidental instantiation

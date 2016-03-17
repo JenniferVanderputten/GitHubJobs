@@ -23,4 +23,5 @@
     <string name="search_results_title">Search Results</string>
     <string name="spinner_getting_location">Getting location&#8230;</string>
     <string name="spinner_searching_jobs">Searching GitHub Jobs&#8230;</string>
+    <string name="delete_alt_text">Delete this item</string>
 </resources>

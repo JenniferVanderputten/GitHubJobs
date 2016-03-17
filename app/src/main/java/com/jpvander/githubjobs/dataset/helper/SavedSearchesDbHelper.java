@@ -31,6 +31,14 @@ public class SavedSearchesDbHelper extends SQLiteOpenHelper {
         onUpgrade(database, oldVersion, newVersion);
     }
 
+    public void deleteRow(long savedSearchId) {
+        SQLiteDatabase database = this.getWritableDatabase();
+        String deleteRecord = SavedSearchesContract.SQL_DELETE_RECORD
+                + SavedSearchesContract.Search._ID + " = " + savedSearchId;
+        database.execSQL(deleteRecord);
+        database.close();
+    }
+
     public void insertRow(GitHubJob job) {
         ContentValues savedSearchValues = new ContentValues();
         savedSearchValues.put(SavedSearchesContract.Search.COLUMN_NAME_LOCATION, job.getLocation());
