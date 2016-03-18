@@ -62,8 +62,6 @@ public class OnGetPositionsResponseCallback implements OnJsonResponseCallback {
         }
 
         callback.updateSearchResults(jobs);
-
-        //TODO: Add pagination?  We'll need a UI change, e.g. a "get more results" button.
     }
 
     public void onJsonFailureResponse() {
