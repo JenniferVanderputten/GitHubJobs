@@ -1,6 +1,6 @@
 <resources>
     <string name="add_search_hint">Add a search</string>
-    <string name="app_name">GitHub Jobs</string>
+    <string name="app_name">Jobs</string>
     <string name="company_log_alt_text">Company Logo</string>
     <string name="default_description">PHP</string>
     <string name="default_location">San Francisco</string>
@@ -22,6 +22,7 @@
     <string name="search_page_hint">Search this page</string>
     <string name="search_results_title">Search Results</string>
     <string name="spinner_getting_location">Getting location&#8230;</string>
-    <string name="spinner_searching_jobs">Searching GitHub Jobs&#8230;</string>
+    <string name="spinner_searching_jobs">Searching Jobs&#8230;</string>
     <string name="delete_alt_text">Delete this item</string>
+    <string name="oops_thanks">Oops, thanks</string>
 </resources>

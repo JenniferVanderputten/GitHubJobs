@@ -19,7 +19,7 @@ import java.util.Locale;
 public class LocationServiceHelper {
 
     private static final int LOCATION_ACCESS_REQUEST = 111;
-    private static final String LOG_LABEL = "GitHubJobs";
+    private static final String LOG_LABEL = "Jobs";
     private static final String[] permissions = {Manifest.permission.ACCESS_FINE_LOCATION};
 
     private boolean shouldShowRationale;

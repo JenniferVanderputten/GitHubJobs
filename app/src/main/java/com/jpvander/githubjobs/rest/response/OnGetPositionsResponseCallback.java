@@ -12,7 +12,7 @@ import org.json.JSONObject;
 
 public class OnGetPositionsResponseCallback implements OnJsonResponseCallback {
 
-    private static final String LOG_LABEL = "GitHubJobs";
+    private static final String LOG_LABEL = "Jobs";
     private static final String UNEXPECTED_RESPONSE = "Response was not expected: ";
 
     private final SearchResultsCallback callback;

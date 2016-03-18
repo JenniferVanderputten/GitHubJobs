@@ -2,6 +2,7 @@ package com.jpvander.githubjobs.fragment;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
 import android.content.res.Resources;
 import android.os.Bundle;
@@ -60,18 +61,35 @@ public class NewSearchFragment extends BaseFragment {
                 newJob.setDescription(descriptionInput.getText().toString());
                 newJob.setFullAndPartTime(fullTimeInput.isChecked(), partTimeInput.isChecked());
                 SavedSearchesDbHelper savedSearchesDbHelper = new SavedSearchesDbHelper(activity);
-                //TODO: Prevent saving the same search twice
-                savedSearchesDbHelper.insertRow(newJob);
+
+                if (!savedSearchesDbHelper.insertRow(newJob)) {
+                    AlertDialog.Builder alertBuilder = new AlertDialog.Builder(getContext());
+                    alertBuilder.setMessage("This job search already exists.");
+                    alertBuilder.setPositiveButton(getResources().getString(R.string.oops_thanks), null);
+                    alertBuilder.create().show();
+                }
+                else {
+                    interactionListener.onNewSearchInteraction(newJob);
+                    locationInput.setText("");
+                    descriptionInput.setText("");
+                    fullTimeInput.setChecked(true);
+                    partTimeInput.setChecked(true);
+                }
+
                 savedSearchesDbHelper.close();
-                interactionListener.onNewSearchInteraction(newJob);
-                locationInput.setText("");
-                descriptionInput.setText("");
-                fullTimeInput.setChecked(true);
-                partTimeInput.setChecked(true);
             }
         });
 
         return view;
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        locationInput.setText("");
+        descriptionInput.setText("");
+        fullTimeInput.setChecked(true);
+        partTimeInput.setChecked(true);
     }
 
     @Override

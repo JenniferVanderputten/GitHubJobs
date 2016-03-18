@@ -39,17 +39,35 @@ public class SavedSearchesDbHelper extends SQLiteOpenHelper {
         database.close();
     }
 
-    public void insertRow(GitHubJob job) {
+    public boolean insertRow(GitHubJob job) {
+        SQLiteDatabase database = this.getReadableDatabase();
+        String findRecords = SavedSearchesContract.SQL_SELECT_WHERE
+                + sqlEquality(SavedSearchesContract.Search.COLUMN_NAME_LOCATION, job.getLocation()) + " AND "
+                + sqlEquality(SavedSearchesContract.Search.COLUMN_NAME_DESCRIPTION, job.getDescription()) + " AND "
+                + sqlEquality(SavedSearchesContract.Search.COLUMN_NAME_FULL_TIME, job.isFullTime().toString()) + " AND "
+                + sqlEquality(SavedSearchesContract.Search.COLUMN_NAME_PART_TIME, job.isPartTime().toString());
+        Cursor cursor = database.rawQuery(findRecords, null);
+
+        if (cursor.getCount() > 0) {
+            cursor.close();
+            database.close();
+            return false;
+        }
+        else {
+            database.close();
+        }
+
         ContentValues savedSearchValues = new ContentValues();
         savedSearchValues.put(SavedSearchesContract.Search.COLUMN_NAME_LOCATION, job.getLocation());
         savedSearchValues.put(SavedSearchesContract.Search.COLUMN_NAME_DESCRIPTION, job.getDescription());
         savedSearchValues.put(SavedSearchesContract.Search.COLUMN_NAME_FULL_TIME, job.isFullTime().toString());
         savedSearchValues.put(SavedSearchesContract.Search.COLUMN_NAME_PART_TIME, job.isPartTime().toString());
 
-        SQLiteDatabase database = this.getWritableDatabase();
+        database = this.getWritableDatabase();
         long id = database.insert(SavedSearchesContract.TABLE_NAME, null, savedSearchValues);
         database.close();
         job.setSavedSearchId(id);
+        return true;
     }
 
     public GitHubJobs getSavedSearches() {
@@ -87,5 +105,9 @@ public class SavedSearchesDbHelper extends SQLiteOpenHelper {
         long rowCount  = DatabaseUtils.queryNumEntries(database, SavedSearchesContract.TABLE_NAME);
         database.close();
         return rowCount;
+    }
+
+    private String sqlEquality(String columnName, String value) {
+        return "UPPER(" + columnName + ") = UPPER(\"" + value + "\")";
     }
 }

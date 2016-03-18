@@ -18,7 +18,7 @@ import com.jpvander.githubjobs.ui.holder.RecyclerTextViewAndImageButtonHolder;
 
 public class SavedSearchesViewAdapter extends RecyclerView.Adapter<RecyclerTextViewAndImageButtonHolder> {
 
-    private static final String LOG_LABEL = "GitHubJobs";
+    private static final String LOG_LABEL = "Jobs";
     private static final String LISTENER_IS_NULL = " listener is NULL";
     private static final String DELETE_SEARCH_PREPEND = "Delete the following saved search?\n\n";
     private static final String DELETE_YES = "Yes, delete";
